@@ -11,10 +11,17 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   TabItem _currentTab = TabItem.home;
 
-  final Map<TabItem, Widget> _pages = {
-    TabItem.home: HomePage(),
-    TabItem.challengesPlayer: ChallangesPlayerPage()
-  };
+  final Map<TabItem, Widget> _pages = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pages.addAll(<TabItem, Widget>{
+      TabItem.home: HomePage(onSelectedTab: _selectePage,),
+      TabItem.challengesPlayer: ChallangesPlayerPage()
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

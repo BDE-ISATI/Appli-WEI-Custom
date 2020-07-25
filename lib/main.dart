@@ -1,5 +1,8 @@
+import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/src/pages/main_page/main_page.dart';
+import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +39,24 @@ class MyApp extends StatelessWidget {
 
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MainPage(),
+      home: MultiProvider(
+        providers: [
+          // TODO: remove this user logged one
+          ChangeNotifierProvider(create: (context) => UserStore(
+            user: User.fromMap(<String, dynamic>{
+              'id': '5f1aaad10cb5aa794889bdd7',
+              'firstName': 'Baptiste',
+              'lastName': 'NomBaptise',
+              'username': 'userbapt',
+              'score': 5,
+              'email': 'baptiste@mailuniv.fr',
+              'passwordHash': 'i4auBaSclYMte/0gZ3WRM/k83+H0rPr1Mzp++to0dq7xg/Gcom8xFc+BztIsiWXOjV3sjl+I53pm3pO/6ItGRw=='
+            })
+            ..teamName = "Poke Thibault"
+          ),)
+        ],
+        child: MainPage(),
+      ),
     );
   }
 }

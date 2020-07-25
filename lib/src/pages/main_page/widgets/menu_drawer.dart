@@ -1,5 +1,8 @@
+import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 enum TabItem {
   home,
@@ -28,21 +31,25 @@ class MenuDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: Column(
-        children: [
-          _buildDrawerHeader(context),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: _buildMenuItems(context),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: _buildBottomButtons(),
-          )
-        ],
-      ),
+      child: Consumer<UserStore>(
+        builder: (context, userStore, child) {
+          return Column(
+            children: [
+              _buildDrawerHeader(context, userStore.fullName, userStore.teamName),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: _buildMenuItems(context),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: _buildBottomButtons(),
+              )
+            ],
+          );
+        },
+      )
     );
   }
 
@@ -126,7 +133,7 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-  DrawerHeader _buildDrawerHeader(BuildContext context) {
+  DrawerHeader _buildDrawerHeader(BuildContext context, String userName, String userTeam) {
     return DrawerHeader(
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -134,11 +141,11 @@ class MenuDrawer extends StatelessWidget {
       child: Row(
         children: [
           ClipRRect(
-              borderRadius: BorderRadius.circular(64),
+              borderRadius: BorderRadius.circular(32),
               child: const Image(
                 image: AssetImage("assets/images/players.jpg"), 
-                height: 92,
-                width: 92,
+                height: 64,
+                width: 64,
                 fit: BoxFit.fitHeight,
               ),
           ),
@@ -147,9 +154,9 @@ class MenuDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Victor DENIS", style: Theme.of(context).textTheme.headline3,),
+              Text(userName, style: Theme.of(context).textTheme.headline3,),
               const SizedBox(height: 4,),
-              Text("Equipe Poke Argan", style: Theme.of(context).textTheme.headline4)
+              Text("Equipe $userTeam", style: Theme.of(context).textTheme.headline4)
             ],
           )
         ],
