@@ -1,4 +1,3 @@
-import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:flutter/material.dart';

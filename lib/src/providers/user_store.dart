@@ -1,18 +1,12 @@
-import 'dart:convert';
-
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:flutter/material.dart';
 
 class UserStore with ChangeNotifier {
-  UserStore({@required User user}): _user = user;
+  User _user;
 
-  final User _user;
-
-  String get authentificationHeader {
-    final String auth = "${_user.id}:${_user.passwordHash}";
-    final String encodedAuth = utf8.fuse(base64).encode(auth);
-
-    return "Basic $encodedAuth";
+  void loginUser(User loggedUser) {
+    _user = loggedUser;
+    notifyListeners();
   }
 
   String get fullName => "${_user.firstName} ${_user.lastName}";

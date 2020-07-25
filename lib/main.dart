@@ -1,6 +1,9 @@
 import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/services/authentication_serive.dart';
+import 'package:appli_wei_custom/src/pages/authentication_page/authentication_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/main_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
+import 'package:appli_wei_custom/src/shared/spash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,20 +45,27 @@ class MyApp extends StatelessWidget {
       home: MultiProvider(
         providers: [
           // TODO: remove this user logged one
-          ChangeNotifierProvider(create: (context) => UserStore(
-            user: User.fromMap(<String, dynamic>{
-              'id': '5f1aaad10cb5aa794889bdd7',
-              'firstName': 'Baptiste',
-              'lastName': 'NomBaptise',
-              'username': 'userbapt',
-              'score': 5,
-              'email': 'baptiste@mailuniv.fr',
-              'passwordHash': 'i4auBaSclYMte/0gZ3WRM/k83+H0rPr1Mzp++to0dq7xg/Gcom8xFc+BztIsiWXOjV3sjl+I53pm3pO/6ItGRw=='
-            })
-            ..teamName = "Poke Thibault"
-          ),)
+          ChangeNotifierProvider(create: (context) => UserStore(),)
         ],
-        child: MainPage(),
+        child: FutureBuilder(
+          future: AuthenticationService.instance.getLoggedUser(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(child: Text("Erreur lors du chargement de l'application : ${snapshot.error.toString()}"),);
+              }
+
+              if (!snapshot.hasData) {
+                return AuthenticationPage();
+              }
+
+              Provider.of<UserStore>(context, listen: false).loginUser(snapshot.data as User);
+              return MainPage();
+            }
+            
+            return SplashScreen();
+          },
+        ),
       ),
     );
   }
