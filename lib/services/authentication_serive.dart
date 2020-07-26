@@ -36,7 +36,7 @@ class AuthenticationService {
 
     return User.fromMap(<String, dynamic>{
       'id': preferences.getString("loggedUserId"),
-      'firstName': preferences.getString("loggedUserFistName"),
+      'firstName': preferences.getString("loggedUserFirstName"),
       'lastName': preferences.getString("loggedUserLastName"),
       'username': preferences.getString("loggedUserUsername"),
       'role': preferences.getString("loggedUserRole"),

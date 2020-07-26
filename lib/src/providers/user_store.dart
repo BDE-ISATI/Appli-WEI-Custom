@@ -1,12 +1,20 @@
 import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/services/authentication_serive.dart';
 import 'package:flutter/material.dart';
 
 class UserStore with ChangeNotifier {
   User _user;
 
-  void loginUser(User loggedUser) {
+  void loginUser(User loggedUser, {bool notify = true}) {
     _user = loggedUser;
-    notifyListeners();
+
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  Future<User> getLoggedUser() async {
+    return _user ??= await AuthenticationService.instance.getLoggedUser();
   }
 
   String get fullName => "${_user.firstName} ${_user.lastName}";
