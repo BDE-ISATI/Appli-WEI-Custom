@@ -17,7 +17,7 @@ class Challenge {
     name = map['name'] as String,
     description = map['description'] as String,
     value = map['value'] as int,
-    numberLeft = map['numberLef'] as int,
+    numberLeft = map['numberLeft'] as int,
     imageBase64 = map['image'] as String {
       if (!isForTeam) {
         isWaitingValidation = map['waitingValidation'] as bool;
