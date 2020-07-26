@@ -44,7 +44,7 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
                           child: Text(widget.challenge.description),
                         ),
                         Button(
-                          onPressed: (widget.challenge.isWaitingValidation) ? null : () {
+                          onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () {
 
                           },
                           text: "Valider le défis",
