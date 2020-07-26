@@ -17,6 +17,9 @@ class UserStore with ChangeNotifier {
     return _user ??= await AuthenticationService.instance.getLoggedUser();
   }
 
+  String get id => _user.id;
+  String get authentificationHeader => _user.authentificationHeader;
+
   String get fullName => "${_user.firstName} ${_user.lastName}";
   String get firstName => _user.firstName;
   String get lastName => _user.lastName;

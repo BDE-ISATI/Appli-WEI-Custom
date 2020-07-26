@@ -1,5 +1,3 @@
-import 'package:appli_wei_custom/models/user.dart';
-import 'package:appli_wei_custom/services/authentication_serive.dart';
 import 'package:appli_wei_custom/src/pages/authentication_page/authentication_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/main_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';

@@ -1,3 +1,4 @@
+import 'package:appli_wei_custom/src/pages/home_page/widgets/challenges_list.dart';
 import 'package:appli_wei_custom/src/pages/home_page/widgets/user_score.dart';
 import 'package:appli_wei_custom/src/pages/home_page/widgets/welcome.dart';
 import 'package:appli_wei_custom/src/pages/main_page/widgets/menu_drawer.dart';
@@ -18,8 +19,9 @@ class HomePage extends StatelessWidget {
         Expanded(
           child: UserScore(),
         ),
-        const Expanded(
-          child: Text("Bientôt les défis réalisés"),
+        SizedBox(
+          height: 272,
+          child: ChallengesList(),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
