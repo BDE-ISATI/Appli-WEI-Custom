@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
@@ -65,6 +66,31 @@ class AuthenticationService {
     }
 
     throw Exception("Impossible to login : ${response.body}");
+  }
+
+  Future<String> updatePassword(String authorizationHeader, String oldPassword, String newPassword) async {
+    final http.Response response = await _client.put(
+      '$serviceBaseUrl/update/password',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: jsonEncode(<String, String>{
+        "oldPassword": oldPassword,
+        "newPassword": newPassword
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final String passwordHash = (jsonDecode(response.body) as Map<String, dynamic>)["newPasswordHash"] as String;
+
+      final SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString("loggedUserPasswordHash", passwordHash);
+
+      return passwordHash;
+    }
+    
+    throw Exception("Can't modify the password : ${response.body}");
   }
 
   Future logoutUser() async {

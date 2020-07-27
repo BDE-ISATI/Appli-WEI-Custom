@@ -61,4 +61,10 @@ class UserStore with ChangeNotifier {
 
     notifyListeners();
   }
+
+  void updatePassword(String passwordHash) {
+    _user.passwordHash = passwordHash;
+
+    notifyListeners();
+  }
 }
