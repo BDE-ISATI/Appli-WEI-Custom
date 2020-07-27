@@ -2,6 +2,7 @@ import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/authentication_serive.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
+import 'package:appli_wei_custom/src/shared/widgets/user_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -59,7 +60,10 @@ class MenuDrawer extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Button(
-          onPressed: () {},
+          onPressed: () {
+            onSelectedTab(TabItem.profilSettings);
+            Navigator.of(context).pop();
+          },
           text: "Modifier mon profil",
         ),
         Button(
@@ -151,12 +155,7 @@ class MenuDrawer extends StatelessWidget {
         children: [
           ClipRRect(
               borderRadius: BorderRadius.circular(32),
-              child: const Image(
-                image: AssetImage("assets/images/players.jpg"), 
-                height: 64,
-                width: 64,
-                fit: BoxFit.fitHeight,
-              ),
+              child: const UserProfilePicture()
           ),
           const SizedBox(width: 16),
           Column(

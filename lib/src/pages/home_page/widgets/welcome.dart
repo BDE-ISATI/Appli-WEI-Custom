@@ -1,4 +1,5 @@
 import 'package:appli_wei_custom/src/providers/user_store.dart';
+import 'package:appli_wei_custom/src/shared/widgets/user_profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +15,7 @@ class Welcome extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(48),
-                  child: const Image(
-                    image: AssetImage("assets/images/players.jpg"), 
-                    height: 96,
-                    width: 96,
-                    fit: BoxFit.fitHeight,
-                  ),
+                  child: const UserProfilePicture(size: 96.0,)
               ),
               const SizedBox(width: 16,),
               Flexible(

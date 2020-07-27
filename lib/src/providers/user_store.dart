@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/authentication_serive.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +44,8 @@ class UserStore with ChangeNotifier {
   String get id => _user.id;
   String get authentificationHeader => _user.authentificationHeader;
 
+  Uint8List get profilePicture => (_user.profilePicture != null && _user.profilePicture.isNotEmpty) ? base64Decode(_user.profilePicture) : null;
+
   String get fullName => "${_user.firstName} ${_user.lastName}";
   String get firstName => _user.firstName;
   String get lastName => _user.lastName;
@@ -50,4 +55,10 @@ class UserStore with ChangeNotifier {
   int get score => _user.score;
   String get teamName => _user.teamName;
   String get teamId => _user.teamId;
+
+  void updateProfilePicture(String newProfilePicture) {
+    _user.profilePicture = newProfilePicture;
+
+    notifyListeners();
+  }
 }

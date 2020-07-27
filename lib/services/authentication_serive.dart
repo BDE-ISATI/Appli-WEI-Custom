@@ -28,6 +28,7 @@ class AuthenticationService {
 
     return User.fromMap(<String, dynamic>{
       'id': preferences.getString("loggedUserId"),
+      'profilePicture': preferences.getString("loggedUserProfilePicture"),
       'firstName': preferences.getString("loggedUserFirstName"),
       'lastName': preferences.getString("loggedUserLastName"),
       'username': preferences.getString("loggedUserUsername"),
@@ -70,6 +71,7 @@ class AuthenticationService {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
     preferences.setString("loggedUserId", null);
+    preferences.setString("loggedUserProfilePicture", null);
     preferences.setString("loggedUserFirstName", null);
     preferences.setString("loggedUserLastName", null);
     preferences.setString("loggedUserUsername", null);
@@ -85,6 +87,7 @@ class AuthenticationService {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
     preferences.setString("loggedUserId", loggedUser.id);
+    preferences.setString("loggedUserProfilePicture", loggedUser.profilePicture);
     preferences.setString("loggedUserFirstName", loggedUser.firstName);
     preferences.setString("loggedUserLastName", loggedUser.lastName);
     preferences.setString("loggedUserUsername", loggedUser.username);

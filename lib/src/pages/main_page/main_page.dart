@@ -3,6 +3,7 @@ import 'package:appli_wei_custom/src/pages/challenges_player_page/challenges_pla
 import 'package:appli_wei_custom/src/pages/challenges_team_page/challenges_team_page.dart';
 import 'package:appli_wei_custom/src/pages/home_page/home_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/widgets/menu_drawer.dart';
+import 'package:appli_wei_custom/src/pages/modify_profile_page/modify_profile_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,8 @@ class _MainPageState extends State<MainPage> {
     _pages.addAll(<TabItem, Widget>{
       TabItem.home: HomePage(onSelectedTab: _selectePage,),
       TabItem.challengesPlayer: ChallengesPlayerPage(onSelectedTab: _selectePage,),
-      TabItem.challengesTeam: ChallengesTeamPage(onSelectedTab: _selectePage,)
+      TabItem.challengesTeam: ChallengesTeamPage(onSelectedTab: _selectePage,),
+      TabItem.profilSettings: ModifyProfilePage(),
     });
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);

@@ -9,6 +9,8 @@ mixin UserRoles {
 class User {
   String id;
 
+  String profilePicture;
+
   String firstName;
   String lastName;
   String username;
@@ -30,6 +32,7 @@ class User {
 
   User.fromMap(Map<String, dynamic> map) :
     id = map['id'] as String,
+    profilePicture = map['profilePicture'] as String,
     firstName = map['firstName'] as String,
     lastName = map['lastName'] as String,
     username = map['username'] as String,
