@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:appli_wei_custom/src/pages/authentication_page/authentication_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/main_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
@@ -5,7 +7,16 @@ import 'package:appli_wei_custom/src/shared/spash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+class DebugHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> host == "192.168.1.38";
+  }
+}
+
 void main() {
+  HttpOverrides.global = DebugHttpOverrides();
   runApp(MyApp());
 }
 

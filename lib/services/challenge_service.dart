@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/models/waiting_challenges.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 
 class ChallengeService {
   ChallengeService._privateConstructor();
@@ -13,17 +12,10 @@ class ChallengeService {
 
   static final ChallengeService instance = ChallengeService._privateConstructor();
 
-  // TODO: remove this when API will be released
-  bool _certificateCheck(X509Certificate cert, String host, int port) => true;
-
-  http.Client localApiClient() {
-    final ioClient = HttpClient()..badCertificateCallback = _certificateCheck;
-
-    return IOClient(ioClient);
-  }
+  final _client = http.Client();
 
   Future<List<Challenge>> challengesForUser(String authorizationHeader, String userId) async {
-    final http.Response response = await localApiClient().get(
+    final http.Response response = await _client.get(
       '$serviceBaseUrl/individual/$userId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
@@ -47,7 +39,7 @@ class ChallengeService {
   }
 
   Future<List<Challenge>> doneChallengesForUser(String authorizationHeader, String userId) async {
-    final http.Response response = await localApiClient().get(
+    final http.Response response = await _client.get(
       '$serviceBaseUrl/done/$userId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
@@ -71,7 +63,7 @@ class ChallengeService {
   }
 
   Future<List<WaitingChallenge>> waitingChallenges(String authorizationHeader) async {
-    final http.Response response = await localApiClient().get(
+    final http.Response response = await _client.get(
       '$serviceBaseUrl/waiting',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
@@ -95,7 +87,7 @@ class ChallengeService {
   }
   
   Future<String> proofImage(String authorizationHeader, String challengeId, String userId) async {
-    final http.Response response = await localApiClient().get(
+    final http.Response response = await _client.get(
       '$serviceBaseUrl/proof/$challengeId/$userId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
@@ -110,7 +102,7 @@ class ChallengeService {
   }
 
   Future submitChallenge(String authorizationHeader, String challengeId, String proofImage) async {
-    final http.Response response = await localApiClient().post(
+    final http.Response response = await _client.post(
       '$serviceBaseUrl/submit',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

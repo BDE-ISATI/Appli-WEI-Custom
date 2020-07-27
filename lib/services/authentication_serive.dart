@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/team_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService {
@@ -14,14 +12,7 @@ class AuthenticationService {
 
   static final AuthenticationService instance = AuthenticationService._privateConstructor();
 
-  // TODO: remove this when API will be released
-  bool _certificateCheck(X509Certificate cert, String host, int port) => true;
-
-  http.Client localApiClient() {
-    final ioClient = HttpClient()..badCertificateCallback = _certificateCheck;
-
-    return IOClient(ioClient);
-  }
+  final _client = http.Client();
 
   // We need to check application settings to avoid need
   // to connect at every startup
@@ -48,7 +39,7 @@ class AuthenticationService {
   }
 
   Future<User> loggin(String username, String password) async {
-    final http.Response response = await localApiClient().post(
+    final http.Response response = await _client.post(
       '$serviceBaseUrl/login',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

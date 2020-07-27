@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:appli_wei_custom/models/team.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/io_client.dart';
 
 class TeamService {
   TeamService._privateConstructor();
@@ -12,17 +11,10 @@ class TeamService {
 
   static final TeamService instance = TeamService._privateConstructor();
 
-  // TODO: remove this when API will be released
-  bool _certificateCheck(X509Certificate cert, String host, int port) => true;
-
-  http.Client localApiClient() {
-    final ioClient = HttpClient()..badCertificateCallback = _certificateCheck;
-
-    return IOClient(ioClient);
-  }
+  final _client = http.Client();
 
   Future<Team> teamForUser(String authorizationHeader, String userId) async {
-    final http.Response response = await localApiClient().get(
+    final http.Response response = await _client.get(
       '$serviceBaseUrl/for_user/$userId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
