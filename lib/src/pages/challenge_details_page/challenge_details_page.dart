@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:appli_wei_custom/models/challenge.dart';
+import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/challenge_service.dart';
 import 'package:appli_wei_custom/src/pages/challenge_details_page/widgets/challenge_title.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
@@ -23,6 +24,8 @@ class ChallengeDetailsPage extends StatefulWidget {
 
 class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   bool _sendingValidation = false;
+  bool _isValidatingChallenge = false;
+  String _errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +54,10 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
                         Expanded(
                           child: Text(widget.challenge.description),
                         ),
-                        if (!_sendingValidation)
-                          Button(
-                            onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
-                              await _sendValidationProof(context);
-                            },
-                            text: "Valider le défis",
-                          )
+                        if (_errorMessage.isNotEmpty) 
+                          Text(_errorMessage),
+                        if (!_sendingValidation && !_isValidatingChallenge)
+                          _buildButton(context)
                         else
                           const Center(child: CircularProgressIndicator(),)
                       ],
@@ -78,6 +78,31 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
         ],
       ),
     );
+  }
+
+  Widget _buildButton(BuildContext context) {
+    final UserStore userStore = Provider.of<UserStore>(context);
+
+    if (widget.challenge.isForTeam) {
+      if (userStore.hasPermission(userStore.role, UserRoles.captain)) {
+        return Button(
+          onPressed: (widget.challenge.numberLeft <= 0) ? null : () async {
+            await _validateChallenge();
+          },
+          text: "Valider le défis",
+        );
+      }
+    }
+    else {
+      return Button(
+        onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
+          await _sendValidationProof(context);
+        },
+        text: "Valider le défis",
+      );
+    }
+
+    return Container();
   }
 
   Future _sendValidationProof(BuildContext context) async {
@@ -109,8 +134,28 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     } catch (e) {
       setState(() {
         _sendingValidation = false;
+        _errorMessage = e.toString();
       });
     }
   }
 
+  // NOTE : we can only validate team challenges from this point
+  Future _validateChallenge() async {
+    setState(() {
+      _isValidatingChallenge = true;
+    });
+
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+
+    try {
+      await ChallengeService.instance.validateChallengeForTeam(userStore.authentificationHeader, widget.challenge.id, userStore.teamId);
+
+      Navigator.of(context).pop(true);
+    }
+    catch (e) {
+      setState(() {
+        _isValidatingChallenge = false;
+      });
+    }
+  }
 }

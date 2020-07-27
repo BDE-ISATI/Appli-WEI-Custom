@@ -9,11 +9,18 @@ import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class WaitingChallengeDetailsPage extends StatelessWidget {
+class WaitingChallengeDetailsPage extends StatefulWidget {
   const WaitingChallengeDetailsPage({Key key, @required this.challenge, this.heroTag}) : super(key: key);
   
   final WaitingChallenge challenge;
   final String heroTag;
+
+  @override
+  _WaitingChallengeDetailsPageState createState() => _WaitingChallengeDetailsPageState();
+}
+
+class _WaitingChallengeDetailsPageState extends State<WaitingChallengeDetailsPage> {
+  bool _isValidatingChallenge = false;
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +33,9 @@ class WaitingChallengeDetailsPage extends StatelessWidget {
               children: [
                 Expanded(
                   child: Hero(
-                    tag: heroTag,
+                    tag: widget.heroTag,
                     child: Image.memory(
-                      base64Decode(challenge.imageBase64),
+                      base64Decode(widget.challenge.imageBase64),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -43,12 +50,12 @@ class WaitingChallengeDetailsPage extends StatelessWidget {
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                Text(challenge.description),
+                                Text(widget.challenge.description),
                                 const SizedBox(height: 16.0,),
                                 Consumer<UserStore>(
                                   builder: (context, userStore, child) {
                                     return FutureBuilder(
-                                      future: ChallengeService.instance.proofImage(userStore.authentificationHeader, challenge.id, challenge.playerId),
+                                      future: ChallengeService.instance.proofImage(userStore.authentificationHeader, widget.challenge.id, widget.challenge.playerId),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState == ConnectionState.done) {
                                           if (!snapshot.hasData) {
@@ -77,12 +84,15 @@ class WaitingChallengeDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Button(
-                          onPressed: () {
-
-                          },
-                          text: "Valider le défis",
-                        )
+                        if (_isValidatingChallenge)
+                          const Center(child: CircularProgressIndicator(),)
+                        else 
+                          Button(
+                            onPressed: () async {
+                              await _validateChallenge();
+                            },
+                            text: "Valider le défis",
+                          )
                       ],
                     ),
                   ),
@@ -95,11 +105,30 @@ class WaitingChallengeDetailsPage extends StatelessWidget {
           Align(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: WaitingChallengeTitle(challenge: challenge,),
+              child: WaitingChallengeTitle(challenge: widget.challenge,),
             ),
           )
         ],
       ),
     );
+  }
+
+  Future _validateChallenge() async {
+    setState(() {
+      _isValidatingChallenge = true;
+    });
+
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+
+    try {
+      await ChallengeService.instance.validateChallengeForUser(userStore.authentificationHeader, widget.challenge.id, widget.challenge.playerId);
+
+      Navigator.of(context).pop(true);
+    }
+    catch (e) {
+      setState(() {
+        _isValidatingChallenge = false;
+      });
+    }
   }
 }

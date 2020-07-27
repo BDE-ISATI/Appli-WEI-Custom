@@ -1,33 +1,33 @@
-import 'package:appli_wei_custom/models/waiting_challenges.dart';
+import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/services/challenge_service.dart';
-import 'package:appli_wei_custom/src/pages/challenges_player_page/widgets/waiting_challenge_card.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
+import 'package:appli_wei_custom/src/shared/widgets/challenge_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class ChallengesPlayerCaptainList extends StatefulWidget {
+class ChallengesTeamList extends StatefulWidget {
   @override
-  _ChallengesPlayerCaptainListState createState() => _ChallengesPlayerCaptainListState();
+  _ChallengesTeamListState createState() => _ChallengesTeamListState();
 }
 
-class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainList> {
-  Future<List<WaitingChallenge>> _waitingChallenges;
-
+class _ChallengesTeamListState extends State<ChallengesTeamList> {
+  Future<List<Challenge>> _challenges;
+  
   @override
   void initState() {
     super.initState();
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    _waitingChallenges = ChallengeService.instance.waitingChallenges(userStore.authentificationHeader);
+    _challenges = ChallengeService.instance.challengesForTeam(userStore.authentificationHeader, userStore.teamId);
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: _getData,
       child: FutureBuilder(
-        future: _waitingChallenges,
+        future: _challenges,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (!snapshot.hasData) {
@@ -38,7 +38,7 @@ class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainLis
               return Center(child: Text("Erreur : ${snapshot.error.toString()}",));
             }
 
-            final List<WaitingChallenge> challenges = snapshot.data as List<WaitingChallenge>;
+            final List<Challenge> challenges = snapshot.data as List<Challenge>;
 
             return _buildGrid(context, challenges);
           }
@@ -49,13 +49,17 @@ class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainLis
     );
   }
 
-  Widget _buildGrid(BuildContext context, List<WaitingChallenge> challenges) {
+  Widget _buildGrid(BuildContext context, List<Challenge> challenges) {
     final List<StaggeredTile> staggeredTiles = [];
-    final List<WaitingChallengeCard> challengesCard = []; 
+    final List<ChallengeCard> challengesCard = []; 
 
     for (int i = 0; i < challenges.length; ++i) {
-      staggeredTiles.add(StaggeredTile.extent(2, i.isEven ? 300 : 324));
-      challengesCard.add(WaitingChallengeCard(challenge: challenges[i], onValidated: _challengeValidate,));
+      staggeredTiles.add(StaggeredTile.extent(2, i.isEven ? 272 : 300));
+      challengesCard.add(ChallengeCard(challenge: challenges[i], onValidated: (validated) async {
+        if (validated) {
+          await _getData();
+        }
+      },));
     }
 
     return StaggeredGridView.count(
@@ -68,13 +72,7 @@ class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainLis
   Future _getData() async {
     setState(() {
       final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    _waitingChallenges = ChallengeService.instance.waitingChallenges(userStore.authentificationHeader);
+      _challenges = ChallengeService.instance.challengesForTeam(userStore.authentificationHeader, userStore.teamId);
     });
-  }
-
-  void _challengeValidate(bool isValidated) {
-    if (isValidated) {
-      _getData();
-    }
   }
 }

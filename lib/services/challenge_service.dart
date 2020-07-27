@@ -38,6 +38,30 @@ class ChallengeService {
     return result;
   }
 
+  Future<List<Challenge>> challengesForTeam(String authorizationHeader, String teamId) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/team/$teamId',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<Challenge> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpChallenges = jsonDecode(response.body) as List<dynamic>;
+
+      for (final challenge in httpChallenges) {
+        result.add(Challenge.fromMap(challenge as Map<String, dynamic>, isForTeam: true),);
+      }
+    }
+    else { 
+      throw Exception("Can't get the challenges for team: ${response.body}");
+    }
+
+    return result;
+  }
+
   Future<List<Challenge>> doneChallengesForUser(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/done/$userId',
@@ -103,19 +127,52 @@ class ChallengeService {
 
   Future submitChallenge(String authorizationHeader, String challengeId, String proofImage) async {
     final http.Response response = await _client.post(
-      '$serviceBaseUrl/submit',
+      '$serviceBaseUrl/$challengeId/submit',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: authorizationHeader
       },
       body: jsonEncode(<String, String>{
-        "challengeId": challengeId,
         "proofImage": proofImage,
       }),
     );
 
     if (response.statusCode != 200) {
-      throw Exception("Impossible to login : ${response.body}");
+      throw Exception("Impossible to submit challenge: ${response.body}");
+    }
+  }
+
+  Future validateChallengeForUser(String authorizationHeader, String challengeId, String userId) async {
+    final http.Response response = await _client.post(
+      '$serviceBaseUrl/$challengeId/validate_for_user',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: jsonEncode(<String, String>{
+        "validatorId": userId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Impossible to validate challenge : ${response.body}");
+    }
+  }
+
+  Future validateChallengeForTeam(String authorizationHeader, String challengeId, String teamId) async {
+    final http.Response response = await _client.post(
+      '$serviceBaseUrl/$challengeId/validate_for_team',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: jsonEncode(<String, String>{
+        "validatorId": teamId,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Impossible to validate challenge : ${response.body}");
     }
   }
 }

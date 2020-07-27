@@ -1,5 +1,6 @@
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/src/pages/challenges_player_page/challenges_player_page.dart';
+import 'package:appli_wei_custom/src/pages/challenges_team_page/challenges_team_page.dart';
 import 'package:appli_wei_custom/src/pages/home_page/home_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/widgets/menu_drawer.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
@@ -22,7 +23,8 @@ class _MainPageState extends State<MainPage> {
 
     _pages.addAll(<TabItem, Widget>{
       TabItem.home: HomePage(onSelectedTab: _selectePage,),
-      TabItem.challengesPlayer: ChallengesPlayerPage()
+      TabItem.challengesPlayer: ChallengesPlayerPage(onSelectedTab: _selectePage,),
+      TabItem.challengesTeam: ChallengesTeamPage(onSelectedTab: _selectePage,)
     });
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);

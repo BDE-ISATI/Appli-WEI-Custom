@@ -24,7 +24,8 @@ class ChallengeTitle extends StatelessWidget {
           }
           else ...{
             Text("Nombre de répétition restantes : ${challenge.numberLeft}", style: Theme.of(context).textTheme.headline3,),
-            Text("Status : ${challenge.isWaitingValidation ? "en cours de validation" : "à faire" }", style: Theme.of(context).textTheme.headline4,)
+            if (!challenge.isForTeam)
+              Text("Status : ${challenge.isWaitingValidation ? "en cours de validation" : "à faire" }", style: Theme.of(context).textTheme.headline4,)
           }
 
         ],

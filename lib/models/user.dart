@@ -15,6 +15,7 @@ class User {
 
   String role;
   String teamName;
+  String teamId;
   int score;
 
   String email;

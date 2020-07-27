@@ -6,7 +6,9 @@ import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
 class WaitingChallengeCard extends StatelessWidget {
-  const WaitingChallengeCard({Key key, @required this.challenge}) : super(key: key);
+  const WaitingChallengeCard({Key key, @required this.challenge, @required this.onValidated}) : super(key: key);
+
+  final ValueChanged<bool> onValidated;
 
   final WaitingChallenge challenge;
   
@@ -55,10 +57,14 @@ class WaitingChallengeCard extends StatelessWidget {
                 child: InkWell(
                   splashColor: Colors.red,
                   onTap: () async {
-                    await Navigator.push<void>(
+                    final bool validated = await Navigator.push<bool>(
                       context,
                       MaterialPageRoute(builder: (context) => WaitingChallengeDetailsPage(challenge: challenge, heroTag: challenge.id + challenge.playerId))
                     );
+
+                    if (validated != null) {
+                      onValidated(validated);
+                    }
                   },
                   child: const SizedBox(width: 32, height: 32, child: Icon(Icons.visibility, color: Colors.white,)),
                 ),

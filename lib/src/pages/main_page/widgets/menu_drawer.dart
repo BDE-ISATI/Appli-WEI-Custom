@@ -110,8 +110,8 @@ class MenuDrawer extends StatelessWidget {
           dense: true,
           title: Text('DEFIS EQUIPES', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.challengesTeam))),),
           onTap: () {
-            // Update the state of the app.
-            // ...
+            onSelectedTab(TabItem.challengesTeam);
+            Navigator.of(context).pop();
           },
         ),
         const SizedBox(height: 25,),
@@ -125,8 +125,8 @@ class MenuDrawer extends StatelessWidget {
           dense: true,
           title: Text('CLASSEMENT JOUEURS', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.classmentPlayers))),),
           onTap: () {
-            // Update the state of the app.
-            // ...
+            onSelectedTab(TabItem.classmentPlayers);
+            Navigator.of(context).pop();
           },
         ),
         ListTile(
@@ -134,8 +134,8 @@ class MenuDrawer extends StatelessWidget {
           dense: true,
           title: Text('CLASSEMENT EQUIPES', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.classmentTeams))),),
           onTap: () {
-            // Update the state of the app.
-            // ...
+            onSelectedTab(TabItem.classmentTeams);
+            Navigator.of(context).pop();
           },
         ),
       ],

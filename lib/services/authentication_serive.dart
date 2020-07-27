@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/team_service.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +36,8 @@ class AuthenticationService {
       'email': preferences.getString("loggedUserEmail"),
       'passwordHash': preferences.getString("loggedUserPasswordHash")
     })
-    ..teamName = preferences.getString("loggedUserTeamName");
+    ..teamName = preferences.getString("loggedUserTeamName")
+    ..teamId = preferences.getString("loggedUserTeamId");
   }
 
   Future<User> loggin(String username, String password) async {
@@ -52,7 +54,9 @@ class AuthenticationService {
 
     if (response.statusCode == 200) {
       final User loggedUser = User.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
-      loggedUser.teamName = (await TeamService.instance.teamForUser(loggedUser.authentificationHeader, loggedUser.id)).name;
+      final Team userTeam = await TeamService.instance.teamForUser(loggedUser.authentificationHeader, loggedUser.id);
+      loggedUser.teamName = userTeam.name;
+      loggedUser.teamId = userTeam.id;
       
       await _saveLoggedUserToSettings(loggedUser);
 
@@ -74,6 +78,7 @@ class AuthenticationService {
     preferences.setString("loggedUserEmail", null);
     preferences.setString("loggedUserPasswordHash", null);
     preferences.setString("loggedUserTeamName", null);
+    preferences.setString("loggedUserTeamId", null);
   }
 
   Future _saveLoggedUserToSettings(User loggedUser) async {
@@ -88,5 +93,6 @@ class AuthenticationService {
     preferences.setString("loggedUserEmail", loggedUser.email);
     preferences.setString("loggedUserPasswordHash", loggedUser.passwordHash);
     preferences.setString("loggedUserTeamName", loggedUser.teamName);
+    preferences.setString("loggedUserTeamId", loggedUser.teamId);
   }
 }

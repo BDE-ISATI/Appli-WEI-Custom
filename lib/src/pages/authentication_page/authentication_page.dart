@@ -33,6 +33,9 @@ class AuthenticationPage extends StatelessWidget {
 
   Future _login(BuildContext context) async {
     final User loggedUser = await showModalBottomSheet<User>(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32.0),
+      ),
       isScrollControlled: true,
       context: context, 
       builder: (context) => LoginDialog()

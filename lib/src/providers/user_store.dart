@@ -49,4 +49,5 @@ class UserStore with ChangeNotifier {
 
   int get score => _user.score;
   String get teamName => _user.teamName;
+  String get teamId => _user.teamId;
 }
