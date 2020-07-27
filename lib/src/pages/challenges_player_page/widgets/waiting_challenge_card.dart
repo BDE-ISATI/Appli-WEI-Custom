@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:appli_wei_custom/models/challenge.dart';
-import 'package:appli_wei_custom/src/pages/challenge_details_page/challenge_details_page.dart';
+import 'package:appli_wei_custom/models/waiting_challenges.dart';
+import 'package:appli_wei_custom/src/pages/waiting_challenge_details_page/waiting_challenge_details_page.dart';
 import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
-class ChallengeCard extends StatelessWidget {
-  const ChallengeCard({Key key, @required this.challenge}) : super(key: key);
+class WaitingChallengeCard extends StatelessWidget {
+  const WaitingChallengeCard({Key key, @required this.challenge}) : super(key: key);
 
-  final Challenge challenge;
+  final WaitingChallenge challenge;
   
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,11 @@ class ChallengeCard extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            flex: 6,
+            flex: 4,
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
               child: Hero(
-                tag: challenge.id,
+                tag: challenge.id + challenge.playerId,
                 child: Image.memory(
                   base64Decode(challenge.imageBase64),
                   height: 132,
@@ -31,11 +31,19 @@ class ChallengeCard extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 8.0,),
+          Expanded(
+            // flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 4),
+              child: Text(challenge.name, style: Theme.of(context).textTheme.headline2,),
+            )
+          ),
           Expanded(
             flex: 2,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(challenge.name, style: Theme.of(context).textTheme.headline2,),
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4, bottom: 8),
+              child: Text(challenge.playerName, style: Theme.of(context).textTheme.headline3,),
             )
           ),
           SizedBox(
@@ -49,7 +57,7 @@ class ChallengeCard extends StatelessWidget {
                   onTap: () async {
                     await Navigator.push<void>(
                       context,
-                      MaterialPageRoute(builder: (context) => ChallengeDetailsPage(challenge: challenge, heroTag: challenge.id,))
+                      MaterialPageRoute(builder: (context) => WaitingChallengeDetailsPage(challenge: challenge, heroTag: challenge.id + challenge.playerId))
                     );
                   },
                   child: const SizedBox(width: 32, height: 32, child: Icon(Icons.visibility, color: Colors.white,)),

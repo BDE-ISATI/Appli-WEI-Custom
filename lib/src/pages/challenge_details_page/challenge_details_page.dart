@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:appli_wei_custom/models/challenge.dart';
-import 'package:appli_wei_custom/src/pages/challenge_details/widgets/challenge_title.dart';
+import 'package:appli_wei_custom/src/pages/challenge_details_page/widgets/challenge_title.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
