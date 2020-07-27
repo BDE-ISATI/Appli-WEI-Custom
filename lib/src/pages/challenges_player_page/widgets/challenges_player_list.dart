@@ -6,32 +6,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
-class ChallengesPlayerList extends StatelessWidget {
+class ChallengesPlayerList extends StatefulWidget {
+  @override
+  _ChallengesPlayerListState createState() => _ChallengesPlayerListState();
+}
+
+class _ChallengesPlayerListState extends State<ChallengesPlayerList> {
+  Future<List<Challenge>> _challenges;
+  
+  @override
+  void initState() {
+    super.initState();
+
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+    _challenges = ChallengeService.instance.challengesForUser(userStore.authentificationHeader, userStore.id);
+  }
+  
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserStore>(
-      builder: (context, userStore, child) {
-        return FutureBuilder(
-          future: ChallengeService.instance.challengesForUser(userStore.authentificationHeader, userStore.id),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (!snapshot.hasData) {
-                return const Center(child: Text("Impossible d'obtenir les défis"),);
-              }
-
-              if (snapshot.hasError) {
-                return Center(child: Text("Erreur : ${snapshot.error.toString()}",));
-              }
-
-              final List<Challenge> challenges = snapshot.data as List<Challenge>;
-
-              return _buildGrid(context, challenges);
+    return RefreshIndicator(
+      onRefresh: _getData,
+      child: FutureBuilder(
+        future: _challenges,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasData) {
+              return const Center(child: Text("Impossible d'obtenir les défis"),);
             }
 
-            return const Center(child: CircularProgressIndicator(),);
-          },
-        );
-      },
+            if (snapshot.hasError) {
+              return Center(child: Text("Erreur : ${snapshot.error.toString()}",));
+            }
+
+            final List<Challenge> challenges = snapshot.data as List<Challenge>;
+
+            return _buildGrid(context, challenges);
+          }
+
+          return const Center(child: CircularProgressIndicator(),);
+        },
+      ),
     );
   }
 
@@ -49,5 +63,12 @@ class ChallengesPlayerList extends StatelessWidget {
       staggeredTiles: staggeredTiles,
       children: challengesCard,
     );
+  }
+
+  Future _getData() async {
+    setState(() {
+      final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+      _challenges = ChallengeService.instance.challengesForUser(userStore.authentificationHeader, userStore.id);
+    });
   }
 }
