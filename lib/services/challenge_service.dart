@@ -108,4 +108,22 @@ class ChallengeService {
     
     throw Exception("Can't get the proof: ${response.body}");
   }
+
+  Future submitChallenge(String authorizationHeader, String challengeId, String proofImage) async {
+    final http.Response response = await localApiClient().post(
+      '$serviceBaseUrl/submit',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: jsonEncode(<String, String>{
+        "challengeId": challengeId,
+        "proofImage": proofImage,
+      }),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Impossible to login : ${response.body}");
+    }
+  }
 }
