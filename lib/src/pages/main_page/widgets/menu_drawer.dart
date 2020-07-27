@@ -1,3 +1,5 @@
+import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/services/authentication_serive.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,7 @@ class MenuDrawer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: _buildBottomButtons(),
+                child: _buildBottomButtons(context),
               )
             ],
           );
@@ -52,7 +54,7 @@ class MenuDrawer extends StatelessWidget {
     );
   }
 
-  Column _buildBottomButtons() {
+  Column _buildBottomButtons(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -61,7 +63,10 @@ class MenuDrawer extends StatelessWidget {
           text: "Modifier mon profil",
         ),
         Button(
-          onPressed: () {},
+          onPressed: () async {
+            await AuthenticationService.instance.logoutUser();
+            Provider.of<UserStore>(context, listen: false).logoutUser();
+          },
           text: "Déconnexion",
         )
       ],
@@ -69,17 +74,22 @@ class MenuDrawer extends StatelessWidget {
   }
 
   ListView _buildMenuItems(BuildContext context) {
+    final UserStore userStore = Provider.of<UserStore>(context);
+
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        ListTile(
-          contentPadding: const EdgeInsets.all(0),
-          dense: true,
-          title: Text('ACCUEIL', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.home))),),
-          onTap: () {
-            onSelectedTab(TabItem.home);
-            Navigator.of(context).pop();
-          },
+        Visibility(
+          visible: !userStore.hasPermission(userStore.role, UserRoles.captain),
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(0),
+            dense: true,
+            title: Text('ACCUEIL', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.home))),),
+            onTap: () {
+              onSelectedTab(TabItem.home);
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         ListTile(
           contentPadding: const EdgeInsets.all(0),

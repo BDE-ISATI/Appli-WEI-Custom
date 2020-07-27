@@ -7,9 +7,10 @@ import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class ChallengeDetailsPage extends StatefulWidget {
-  const ChallengeDetailsPage({Key key, @required this.challenge}) : super(key: key);
+  const ChallengeDetailsPage({Key key, @required this.challenge, this.heroTag}) : super(key: key);
   
   final Challenge challenge;
+  final String heroTag;
 
   @override 
   _ChallengeDetailsPageState createState() => _ChallengeDetailsPageState();
@@ -27,7 +28,7 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
               children: [
                 Expanded(
                   child: Hero(
-                    tag: "challenge_image",
+                    tag: widget.heroTag,
                     child: Image.memory(
                       base64Decode(widget.challenge.imageBase64),
                       fit: BoxFit.cover,

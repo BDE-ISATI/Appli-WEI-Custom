@@ -1,7 +1,10 @@
+import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/src/pages/challenges_player_page/challenges_player_page.dart';
 import 'package:appli_wei_custom/src/pages/home_page/home_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/widgets/menu_drawer.dart';
+import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -9,7 +12,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  TabItem _currentTab = TabItem.home;
+  TabItem _currentTab;
 
   final Map<TabItem, Widget> _pages = {};
 
@@ -19,8 +22,17 @@ class _MainPageState extends State<MainPage> {
 
     _pages.addAll(<TabItem, Widget>{
       TabItem.home: HomePage(onSelectedTab: _selectePage,),
-      TabItem.challengesPlayer: ChallangesPlayerPage()
+      TabItem.challengesPlayer: ChallengesPlayerPage()
     });
+
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+
+    if (userStore.hasPermission(userStore.role, UserRoles.captain)) {
+      _currentTab = TabItem.challengesPlayer;
+    }
+    else {
+      _currentTab = TabItem.home;
+    }
   }
 
   @override

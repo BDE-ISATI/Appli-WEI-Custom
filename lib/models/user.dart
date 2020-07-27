@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-class UserRoles {
-  static const defaultRole = "Default";
-  static const captain = "Captain";
-  static const administrator = "Administrator";
+mixin UserRoles {
+  static String defaultRole = "Default";
+  static String captain = "Captain";
+  static String administrator = "Administrator";
 }
 
 class User {

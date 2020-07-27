@@ -13,8 +13,29 @@ class UserStore with ChangeNotifier {
     }
   }
 
+  void logoutUser() {
+    _user = null;
+    notifyListeners();
+  }
+
   Future<User> getLoggedUser() async {
     return _user ??= await AuthenticationService.instance.getLoggedUser();
+  }
+
+  bool hasPermission(String level, String permission) {
+    if (level == UserRoles.administrator) {
+      return true;
+    }
+
+    if (level == UserRoles.captain) {
+      return permission == UserRoles.captain || permission == UserRoles.defaultRole;
+    } 
+    
+    if (level == UserRoles.defaultRole) {
+      return permission == UserRoles.defaultRole;
+    }
+
+    return false;
   }
 
   String get id => _user.id;
@@ -23,6 +44,8 @@ class UserStore with ChangeNotifier {
   String get fullName => "${_user.firstName} ${_user.lastName}";
   String get firstName => _user.firstName;
   String get lastName => _user.lastName;
+
+  String get role => _user.role;
 
   int get score => _user.score;
   String get teamName => _user.teamName;

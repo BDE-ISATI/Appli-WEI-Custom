@@ -71,6 +71,20 @@ class AuthenticationService {
     throw Exception("Impossible to login : ${response.body}");
   }
 
+  Future logoutUser() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setString("loggedUserId", null);
+    preferences.setString("loggedUserFirstName", null);
+    preferences.setString("loggedUserLastName", null);
+    preferences.setString("loggedUserUsername", null);
+    preferences.setString("loggedUserRole", null);
+    preferences.setInt("loggedUserScore", null);
+    preferences.setString("loggedUserEmail", null);
+    preferences.setString("loggedUserPasswordHash", null);
+    preferences.setString("loggedUserTeamName", null);
+  }
+
   Future _saveLoggedUserToSettings(User loggedUser) async {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 

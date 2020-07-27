@@ -13,18 +13,22 @@ class ChallengesList extends StatelessWidget {
         return FutureBuilder(
           future: ChallengeService.instance.doneChallengesForUser(userStore.authentificationHeader, userStore.id),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator(),);
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (!snapshot.hasData) {
+                return const Center(child: Text("Impossible de récupérer les défis"),);
+              }
+
+              if (snapshot.hasError) {
+                return Center(child: Text(snapshot.error.toString()),);
+              }
+
+              final List<Challenge> challenges = snapshot.data as List<Challenge>;
+
+              return buildList(context, challenges);
             }
 
-            if (snapshot.hasError) {
-              return Center(child: Text(snapshot.error.toString()),);
-            }
 
-            final List<Challenge> challenges = snapshot.data as List<Challenge>;
-
-            return buildList(context, challenges);
-
+            return const Center(child: CircularProgressIndicator(),);
           },
         );
       },

@@ -22,10 +22,11 @@ class ChallengeCard extends StatelessWidget {
             child: ClipRRect(
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
               child: Hero(
-                tag: "challenge_image",
+                tag: challenge.id,
                 child: Image.memory(
                   base64Decode(challenge.imageBase64),
                   height: 132,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -50,7 +51,7 @@ class ChallengeCard extends StatelessWidget {
                   onTap: () async {
                     await Navigator.push<void>(
                       context,
-                      MaterialPageRoute(builder: (context) => ChallengeDetailsPage(challenge: challenge,))
+                      MaterialPageRoute(builder: (context) => ChallengeDetailsPage(challenge: challenge, heroTag: challenge.id,))
                     );
                   },
                   child: const SizedBox(width: 32, height: 32, child: Icon(Icons.visibility, color: Colors.white,)),

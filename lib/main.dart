@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
               headline1: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w800, fontFamily: "Futura Light", color: Colors.black87),
               headline2: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w300, color: Colors.black87),
               headline3: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300, color: Colors.black87),
-              headline4: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300, color: Colors.black38),
+              headline4: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300, color: Colors.black45),
             ),
 
             visualDensity: VisualDensity.adaptivePlatformDensity,
