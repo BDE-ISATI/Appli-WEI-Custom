@@ -84,7 +84,7 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     final UserStore userStore = Provider.of<UserStore>(context);
 
     if (widget.challenge.isForTeam) {
-      if (userStore.hasPermission(userStore.role, UserRoles.captain)) {
+      if (userStore.hasPermission(UserRoles.captain)) {
         return Button(
           onPressed: (widget.challenge.numberLeft <= 0) ? null : () async {
             await _validateChallenge();

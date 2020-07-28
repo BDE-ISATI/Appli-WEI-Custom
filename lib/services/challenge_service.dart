@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/models/waiting_challenges.dart';
 import 'package:http/http.dart' as http;
@@ -53,6 +54,30 @@ class ChallengeService {
 
       for (final challenge in httpChallenges) {
         result.add(Challenge.fromMap(challenge as Map<String, dynamic>, isForTeam: true),);
+      }
+    }
+    else { 
+      throw Exception("Can't get the challenges for team: ${response.body}");
+    }
+
+    return result;
+  }
+
+  Future<List<AdminChallenge>> challengesForAdministration(String authorizationHeader) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<AdminChallenge> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpChallenges = jsonDecode(response.body) as List<dynamic>;
+
+      for (final challenge in httpChallenges) {
+        result.add(AdminChallenge.fromMap(challenge as Map<String, dynamic>));
       }
     }
     else { 
@@ -175,4 +200,50 @@ class ChallengeService {
       throw Exception("Impossible to validate challenge : ${response.body}");
     }
   }
+
+  Future<String> createChallenge(String authorizationHeader, AdminChallenge challenge) async {
+    final http.Response response = await _client.post(
+      '$serviceBaseUrl/add',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: challenge.toJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as Map<String, dynamic>)["id"] as String;
+    }
+    
+    throw Exception("Impossible to create challenge: ${response.body}");
+  }
+
+  Future updateChallenge(String authorizationHeader, AdminChallenge challenge) async {
+    final http.Response response = await _client.put(
+      '$serviceBaseUrl/admin_update/${challenge.id}',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+      body: challenge.toJson(),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Impossible to update challenge: ${response.body}");
+    }    
+  }
+
+  Future deleteChallenge(String authorizationHeader, AdminChallenge challenge) async {
+    final http.Response response = await _client.delete(
+      '$serviceBaseUrl/delete/${challenge.id}',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      }
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception("Impossible to delete challenge: ${response.body}");
+    }    
+  }
+
 }

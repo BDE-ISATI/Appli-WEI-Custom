@@ -21,14 +21,17 @@ class WaitingChallengeCard extends StatelessWidget {
         children: [
           Expanded(
             flex: 4,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
-              child: Hero(
-                tag: challenge.id + challenge.playerId,
-                child: Image.memory(
-                  base64Decode(challenge.imageBase64),
-                  height: 132,
-                  fit: BoxFit.cover,
+            child: SizedBox(
+              width: double.infinity,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
+                child: Hero(
+                  tag: challenge.id + challenge.playerId,
+                  child: Image.memory(
+                    base64Decode(challenge.imageBase64),
+                    height: 132,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

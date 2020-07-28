@@ -45,7 +45,10 @@ class ChallengesList extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: challenges.length,
       itemBuilder: (context, index) {
-        return ChallengeCard(challenge: challenges[index],);
+        return SizedBox(
+          width: 200,
+          child: ChallengeCard(challenge: challenges[index],)
+        );
       },
     );
   }

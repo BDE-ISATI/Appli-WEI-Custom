@@ -12,7 +12,8 @@ enum TabItem {
   challengesTeam,
   classmentPlayers,
   classmentTeams,
-  profilSettings
+  profilSettings,
+  administration,
 }
 
 Map<TabItem, int> tabIndex = {
@@ -21,7 +22,8 @@ Map<TabItem, int> tabIndex = {
   TabItem.challengesTeam: 2,
   TabItem.classmentPlayers: 3,
   TabItem.classmentTeams: 4,
-  TabItem.profilSettings: 5
+  TabItem.profilSettings: 5,
+  TabItem.administration: 6,
 };
 
 class MenuDrawer extends StatelessWidget {
@@ -56,9 +58,21 @@ class MenuDrawer extends StatelessWidget {
   }
 
   Column _buildBottomButtons(BuildContext context) {
+    final UserStore userStore = Provider.of<UserStore>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        Visibility(
+          visible: userStore.hasPermission(UserRoles.administrator),
+          child: Button(
+            onPressed: () {
+              onSelectedTab(TabItem.administration);
+              Navigator.of(context).pop();
+            },
+            text: "Administration",
+          ),
+        ),
         Button(
           onPressed: () {
             onSelectedTab(TabItem.profilSettings);
@@ -84,7 +98,7 @@ class MenuDrawer extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: <Widget>[
         Visibility(
-          visible: !userStore.hasPermission(userStore.role, UserRoles.captain),
+          visible: !userStore.hasPermission(UserRoles.administrator),
           child: ListTile(
             contentPadding: const EdgeInsets.all(0),
             dense: true,

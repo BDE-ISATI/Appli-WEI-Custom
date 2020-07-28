@@ -25,16 +25,16 @@ class UserStore with ChangeNotifier {
     return _user ??= await AuthenticationService.instance.getLoggedUser();
   }
 
-  bool hasPermission(String level, String permission) {
-    if (level == UserRoles.administrator) {
+  bool hasPermission(String permission) {
+    if (_user.role == UserRoles.administrator) {
       return true;
     }
 
-    if (level == UserRoles.captain) {
+    if (_user.role == UserRoles.captain) {
       return permission == UserRoles.captain || permission == UserRoles.defaultRole;
     } 
     
-    if (level == UserRoles.defaultRole) {
+    if (_user.role == UserRoles.defaultRole) {
       return permission == UserRoles.defaultRole;
     }
 

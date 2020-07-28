@@ -1,4 +1,5 @@
 import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_home_page/admin_home_page.dart';
 import 'package:appli_wei_custom/src/pages/challenges_player_page/challenges_player_page.dart';
 import 'package:appli_wei_custom/src/pages/challenges_team_page/challenges_team_page.dart';
 import 'package:appli_wei_custom/src/pages/home_page/home_page.dart';
@@ -27,11 +28,12 @@ class _MainPageState extends State<MainPage> {
       TabItem.challengesPlayer: ChallengesPlayerPage(onSelectedTab: _selectePage,),
       TabItem.challengesTeam: ChallengesTeamPage(onSelectedTab: _selectePage,),
       TabItem.profilSettings: ModifyProfilePage(),
+      TabItem.administration: AdminHomePage(),
     });
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
 
-    if (userStore.hasPermission(userStore.role, UserRoles.captain)) {
+    if (userStore.hasPermission(UserRoles.captain)) {
       _currentTab = TabItem.challengesPlayer;
     }
     else {

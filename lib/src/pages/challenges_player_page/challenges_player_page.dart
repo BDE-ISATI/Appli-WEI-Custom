@@ -24,7 +24,7 @@ class ChallengesPlayerPage extends StatelessWidget {
           Expanded(
             child: Consumer<UserStore>(
               builder: (context, userStore, child) {
-                if (userStore.hasPermission(userStore.role, UserRoles.captain)) {
+                if (userStore.hasPermission(UserRoles.captain)) {
                   return ChallengesPlayerCaptainList();
                 }
 
