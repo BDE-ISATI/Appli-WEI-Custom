@@ -70,6 +70,7 @@ class _AdminChallengeFormState extends State<AdminChallengeForm> {
                       const SizedBox(height: 8.0,),
                       FormTextInput(
                         controller: _descriptionController,
+                        inputType: TextInputType.multiline,
                         hintText: "Entrez la description du défis",
                         labelText: "Description",
                         validator: (String value) {

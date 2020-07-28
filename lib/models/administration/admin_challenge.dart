@@ -8,7 +8,7 @@ class AdminChallenge {
   int value;
   int numberOfRepetitions;
 
-  String imageBase64;
+  String image;
 
   bool isVisible;
   bool isForTeam;
@@ -18,7 +18,7 @@ class AdminChallenge {
     description = "",
     value = 0,
     numberOfRepetitions = 0,
-    imageBase64 = "",
+    image = "",
     isVisible = false,
     isForTeam = false;
 
@@ -28,7 +28,6 @@ class AdminChallenge {
     description = map['description'] as String,
     value = map['value'] as int,
     numberOfRepetitions = map['numberOfRepetitions'] as int,
-    imageBase64 = map['image'] as String,
     isForTeam = map['isForTeam'] as bool,
     isVisible = map['isVisible'] as bool;
 
@@ -36,7 +35,7 @@ class AdminChallenge {
     "id": id,
     "name": name,
     "description": description,
-    "image": imageBase64,
+    "image": image,
     "value": value,
     "numberOfRepetitions": numberOfRepetitions,
     "isForTeam": isForTeam,

@@ -5,7 +5,7 @@ class Challenge {
   String description;
   int value;
 
-  String imageBase64;
+  String image = "";
 
   bool isWaitingValidation;
   int numberLeft;
@@ -17,8 +17,7 @@ class Challenge {
     name = map['name'] as String,
     description = map['description'] as String,
     value = map['value'] as int,
-    numberLeft = map['numberLeft'] as int,
-    imageBase64 = map['image'] as String {
+    numberLeft = map['numberLeft'] as int  {
       if (!isForTeam) {
         isWaitingValidation = map['waitingValidation'] as bool;
       }

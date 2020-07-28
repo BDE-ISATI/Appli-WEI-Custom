@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/src/pages/challenge_details_page/challenge_details_page.dart';
+import 'package:appli_wei_custom/src/shared/widgets/challenge_images/challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
@@ -27,11 +26,11 @@ class ChallengeCard extends StatelessWidget {
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
                 child: Hero(
                   tag: challenge.id,
-                  child: Image.memory(
-                    base64Decode(challenge.imageBase64),
+                  child: ChallengeImage(
+                    challenge: challenge,
                     height: 132,
-                    fit: BoxFit.cover,
-                  ),
+                    boxFit: BoxFit.cover,
+                  )
                 ),
               ),
             ),

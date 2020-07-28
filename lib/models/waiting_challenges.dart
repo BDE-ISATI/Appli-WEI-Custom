@@ -4,10 +4,10 @@ class WaitingChallenge {
   String playerId;
   String playerName;
 
+  String image = "";
+
   String name;
   String description;
-
-  String imageBase64;
 
   final bool isForTeam;
 
@@ -16,6 +16,5 @@ class WaitingChallenge {
     playerId = map['validatorId'] as String,
     playerName = map['validatorName'] as String,
     name = map['name'] as String,
-    description = map['description'] as String,
-    imageBase64 = map['image'] as String;
+    description = map['description'] as String;
 }

@@ -28,11 +28,11 @@ class AdminChallengesStore with ChangeNotifier {
   }
 
   Future<String> createChallenge(AdminChallenge toCreate) async {
-    if (toCreate.imageBase64.isEmpty) {
+    if (toCreate.image.isEmpty) {
       final ByteData bytes = await rootBundle.load('assets/logo.jpg');
       
       final buffer = bytes.buffer;
-      toCreate.imageBase64 = base64.encode(Uint8List.view(buffer));
+      toCreate.image = base64.encode(Uint8List.view(buffer));
     }
 
     try {

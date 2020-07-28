@@ -5,6 +5,7 @@ import 'package:appli_wei_custom/services/challenge_service.dart';
 import 'package:appli_wei_custom/src/pages/waiting_challenge_details_page/widgets/waiting_challenge_title.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
+import 'package:appli_wei_custom/src/shared/widgets/challenge_images/waiting_challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,9 +35,9 @@ class _WaitingChallengeDetailsPageState extends State<WaitingChallengeDetailsPag
                 Expanded(
                   child: Hero(
                     tag: widget.heroTag,
-                    child: Image.memory(
-                      base64Decode(widget.challenge.imageBase64),
-                      fit: BoxFit.cover,
+                    child: WaitingChallengeImage(
+                      challenge: widget.challenge,
+                      boxFit: BoxFit.cover,
                     ),
                   ),
                 ),

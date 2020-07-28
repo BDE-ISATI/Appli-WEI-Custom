@@ -134,6 +134,21 @@ class ChallengeService {
 
     return result;
   }
+
+  Future<String> challengeImage(String authorizationHeader, String challengeId) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/image/$challengeId/',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as Map<String, dynamic>)["image"] as String;
+    }
+    
+    throw Exception("Can't get the image: ${response.body}");
+  }
   
   Future<String> proofImage(String authorizationHeader, String challengeId, String userId) async {
     final http.Response response = await _client.get(

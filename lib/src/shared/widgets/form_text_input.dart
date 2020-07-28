@@ -33,7 +33,7 @@ class FormTextInput extends StatelessWidget {
           if (inputType == TextInputType.number)
             WhitelistingTextInputFormatter.digitsOnly
         ],
-        maxLines: inputType == TextInputType.multiline ? 2 : 1,
+        maxLines: inputType == TextInputType.multiline ? 4 : 1,
         decoration: InputDecoration(
               border:  const UnderlineInputBorder(
                 borderSide: BorderSide(

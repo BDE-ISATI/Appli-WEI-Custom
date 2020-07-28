@@ -5,6 +5,7 @@ import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
 import 'package:appli_wei_custom/src/pages/administration/admin_challenge_edit_page/widgets/admin_challenge_form.dart';
 import 'package:appli_wei_custom/src/providers/admin_challenges_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
+import 'package:appli_wei_custom/src/shared/widgets/challenge_images/admin_challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -38,14 +39,9 @@ class _AdminChallengeEditPageState extends State<AdminChallengeEditPage> {
                       Positioned.fill(
                         child: Hero(
                           tag: widget.heroTag,
-                          child: widget.challenge.imageBase64.isNotEmpty 
-                          ? Image.memory(
-                            base64Decode(widget.challenge.imageBase64),
-                            fit: BoxFit.cover,
-                          )
-                          : const Image(
-                              image: AssetImage("assets/logo.jpg"), 
-                              fit: BoxFit.cover
+                          child: AdminChallengeImage(
+                            challenge: widget.challenge,
+                            boxFit: BoxFit.cover,
                           )
                         ),
                       ),
@@ -86,7 +82,7 @@ class _AdminChallengeEditPageState extends State<AdminChallengeEditPage> {
     final String base64Image = base64Encode(bytes);
     
     setState(() {
-      widget.challenge.imageBase64 = base64Image;
+      widget.challenge.image = base64Image;
     });
   }
 }

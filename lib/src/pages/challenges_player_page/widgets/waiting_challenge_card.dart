@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:appli_wei_custom/models/waiting_challenges.dart';
 import 'package:appli_wei_custom/src/pages/waiting_challenge_details_page/waiting_challenge_details_page.dart';
+import 'package:appli_wei_custom/src/shared/widgets/challenge_images/waiting_challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
@@ -27,10 +26,10 @@ class WaitingChallengeCard extends StatelessWidget {
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(32.0), topRight: Radius.circular(32.0)),
                 child: Hero(
                   tag: challenge.id + challenge.playerId,
-                  child: Image.memory(
-                    base64Decode(challenge.imageBase64),
+                  child: WaitingChallengeImage(
+                    challenge: challenge,
                     height: 132,
-                    fit: BoxFit.cover,
+                    boxFit: BoxFit.cover,
                   ),
                 ),
               ),

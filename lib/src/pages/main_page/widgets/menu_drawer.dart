@@ -98,7 +98,7 @@ class MenuDrawer extends StatelessWidget {
       padding: EdgeInsets.zero,
       children: <Widget>[
         Visibility(
-          visible: !userStore.hasPermission(UserRoles.administrator),
+          visible: !userStore.hasPermission(UserRoles.captain) && !userStore.hasPermission(UserRoles.administrator),
           child: ListTile(
             contentPadding: const EdgeInsets.all(0),
             dense: true,
