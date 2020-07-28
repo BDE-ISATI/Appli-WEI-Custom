@@ -5,6 +5,7 @@ import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/models/waiting_challenges.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChallengeService {
   ChallengeService._privateConstructor();
@@ -136,7 +137,13 @@ class ChallengeService {
     return result;
   }
 
-  Future<String> getChallengeImage(String authorizationHeader, String challengeId) async {
+  Future<String> getChallengeImage(String authorizationHeader, String challengeId, String imageId) async {
+    final String cachedImage = await _getCachedImage(challengeId, imageId);
+
+    if (cachedImage != null) {
+      return cachedImage;
+    }
+
     final http.Response response = await _client.get(
       '$serviceBaseUrl/$challengeId/image',
       headers: <String, String>{
@@ -145,7 +152,10 @@ class ChallengeService {
     );
 
     if (response.statusCode == 200) {
-      return (jsonDecode(response.body) as Map<String, dynamic>)["image"] as String;
+      final String challengeImage = (jsonDecode(response.body) as Map<String, dynamic>)["image"] as String;
+
+      await _cacheImage(challengeId, imageId, challengeImage);
+      return challengeImage;
     }
     
     throw Exception("Can't get the image: ${response.body}");
@@ -268,4 +278,20 @@ class ChallengeService {
     }    
   }
 
+  Future<String> _getCachedImage(String challengeId, String imageId) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    if (preferences.getString("${challengeId}_imageId") == imageId) {
+      return preferences.getString("${challengeId}_cachedImage");
+    }
+
+    return null;
+  }
+
+  Future _cacheImage(String challengeId, String imageId, String image) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setString("${challengeId}_imageId", imageId);
+    preferences.setString("${challengeId}_cachedImage", image);
+  }
 }

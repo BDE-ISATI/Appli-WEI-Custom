@@ -18,7 +18,7 @@ class UserService {
   // Get
   Future<String> getProfilePicture(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
-      '$serviceBaseUrl/profile_picture/$userId',
+      '$serviceBaseUrl/$userId/profile_picture',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
       },

@@ -8,7 +8,8 @@ class AdminChallenge {
   int value;
   int numberOfRepetitions;
 
-  String image;
+  String image = "";
+  String imageId;
 
   bool isVisible;
   bool isForTeam;
@@ -24,6 +25,7 @@ class AdminChallenge {
 
   AdminChallenge.fromMap(Map<String, dynamic> map) :
     id = map['id'] as String,
+    imageId = map['imageId'] as String,
     name = map['name'] as String,
     description = map['description'] as String,
     value = map['value'] as int,

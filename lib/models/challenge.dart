@@ -6,6 +6,7 @@ class Challenge {
   int value;
 
   String image = "";
+  String imageId;
 
   bool isWaitingValidation;
   int numberLeft;
@@ -14,6 +15,7 @@ class Challenge {
 
   Challenge.fromMap(Map<String, dynamic> map, {this.isForTeam = false}) :
     id = map['id'] as String,
+    imageId = map['imageId'] as String,
     name = map['name'] as String,
     description = map['description'] as String,
     value = map['value'] as int,

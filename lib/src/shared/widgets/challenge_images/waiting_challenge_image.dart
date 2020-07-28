@@ -20,7 +20,7 @@ class WaitingChallengeImage extends StatelessWidget {
       builder: (context, userStore, child) {
         if (challenge.image == null || challenge.image.isEmpty) {
           return FutureBuilder(
-            future: ChallengeService.instance.getChallengeImage(userStore.authentificationHeader, challenge.id),
+            future: ChallengeService.instance.getChallengeImage(userStore.authentificationHeader, challenge.id, challenge.imageId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (!snapshot.hasData) {
