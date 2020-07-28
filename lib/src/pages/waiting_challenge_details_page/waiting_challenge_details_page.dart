@@ -56,7 +56,7 @@ class _WaitingChallengeDetailsPageState extends State<WaitingChallengeDetailsPag
                                 Consumer<UserStore>(
                                   builder: (context, userStore, child) {
                                     return FutureBuilder(
-                                      future: ChallengeService.instance.proofImage(userStore.authentificationHeader, widget.challenge.id, widget.challenge.playerId),
+                                      future: ChallengeService.instance.getProofImage(userStore.authentificationHeader, widget.challenge.id, widget.challenge.playerId),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState == ConnectionState.done) {
                                           if (!snapshot.hasData) {

@@ -17,7 +17,7 @@ class AdminChallengesStore with ChangeNotifier {
     if (_challenges.isEmpty || forceUpdate) {
       _challenges.clear();
       try {
-        _challenges.addAll(await ChallengeService.instance.challengesForAdministration(authorizationHeader));
+        _challenges.addAll(await ChallengeService.instance.getChallengesForAdministration(authorizationHeader));
       }
       catch (e) {
         throw Exception("Impossible d'obtenir les challenges : ${e.toString()}");

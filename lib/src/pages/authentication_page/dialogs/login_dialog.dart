@@ -103,7 +103,7 @@ class _LoginDialogState extends State<LoginDialog> {
     final String password = _passwordController.text;
 
     try {
-      final User loggedUser = await AuthenticationService.instance.loggin(email, password);
+      final User loggedUser = await AuthenticationService.instance.login(email, password);
 
       Navigator.of(context).pop(loggedUser);
     } 

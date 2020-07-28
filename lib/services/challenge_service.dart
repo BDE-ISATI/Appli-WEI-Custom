@@ -15,7 +15,32 @@ class ChallengeService {
 
   final _client = http.Client();
 
-  Future<List<Challenge>> challengesForUser(String authorizationHeader, String userId) async {
+  // Get
+  Future<List<AdminChallenge>> getChallengesForAdministration(String authorizationHeader) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<AdminChallenge> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpChallenges = jsonDecode(response.body) as List<dynamic>;
+
+      for (final challenge in httpChallenges) {
+        result.add(AdminChallenge.fromMap(challenge as Map<String, dynamic>));
+      }
+    }
+    else { 
+      throw Exception("Can't get the challenges: ${response.body}");
+    }
+
+    return result;
+  }
+
+  Future<List<Challenge>> getChallengesForUser(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/individual/$userId',
       headers: <String, String>{
@@ -39,7 +64,7 @@ class ChallengeService {
     return result;
   }
 
-  Future<List<Challenge>> challengesForTeam(String authorizationHeader, String teamId) async {
+  Future<List<Challenge>> getChallengesForTeam(String authorizationHeader, String teamId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/team/$teamId',
       headers: <String, String>{
@@ -63,31 +88,7 @@ class ChallengeService {
     return result;
   }
 
-  Future<List<AdminChallenge>> challengesForAdministration(String authorizationHeader) async {
-    final http.Response response = await _client.get(
-      '$serviceBaseUrl/',
-      headers: <String, String>{
-        HttpHeaders.authorizationHeader: authorizationHeader
-      },
-    );
-
-    final List<AdminChallenge> result = [];
-
-    if (response.statusCode == 200) {
-      final List<dynamic> httpChallenges = jsonDecode(response.body) as List<dynamic>;
-
-      for (final challenge in httpChallenges) {
-        result.add(AdminChallenge.fromMap(challenge as Map<String, dynamic>));
-      }
-    }
-    else { 
-      throw Exception("Can't get the challenges for team: ${response.body}");
-    }
-
-    return result;
-  }
-
-  Future<List<Challenge>> doneChallengesForUser(String authorizationHeader, String userId) async {
+  Future<List<Challenge>> getDoneChallengesForUser(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/done/$userId',
       headers: <String, String>{
@@ -111,7 +112,7 @@ class ChallengeService {
     return result;
   }
 
-  Future<List<WaitingChallenge>> waitingChallenges(String authorizationHeader) async {
+  Future<List<WaitingChallenge>> getWaitingChallenges(String authorizationHeader) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/waiting',
       headers: <String, String>{
@@ -135,9 +136,9 @@ class ChallengeService {
     return result;
   }
 
-  Future<String> challengeImage(String authorizationHeader, String challengeId) async {
+  Future<String> getChallengeImage(String authorizationHeader, String challengeId) async {
     final http.Response response = await _client.get(
-      '$serviceBaseUrl/image/$challengeId/',
+      '$serviceBaseUrl/$challengeId/image',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
       },
@@ -150,9 +151,9 @@ class ChallengeService {
     throw Exception("Can't get the image: ${response.body}");
   }
   
-  Future<String> proofImage(String authorizationHeader, String challengeId, String userId) async {
+  Future<String> getProofImage(String authorizationHeader, String challengeId, String userId) async {
     final http.Response response = await _client.get(
-      '$serviceBaseUrl/proof/$challengeId/$userId',
+      '$serviceBaseUrl/$challengeId/proof/$userId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
       },
@@ -165,14 +166,16 @@ class ChallengeService {
     throw Exception("Can't get the proof: ${response.body}");
   }
 
+  // Post
   Future submitChallenge(String authorizationHeader, String challengeId, String proofImage) async {
     final http.Response response = await _client.post(
-      '$serviceBaseUrl/$challengeId/submit',
+      '$serviceBaseUrl/submit',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: authorizationHeader
       },
       body: jsonEncode(<String, String>{
+        "challengeId": challengeId,
         "proofImage": proofImage,
       }),
     );
@@ -184,12 +187,13 @@ class ChallengeService {
 
   Future validateChallengeForUser(String authorizationHeader, String challengeId, String userId) async {
     final http.Response response = await _client.post(
-      '$serviceBaseUrl/$challengeId/validate_for_user',
+      '$serviceBaseUrl/validate_for_user',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: authorizationHeader
       },
       body: jsonEncode(<String, String>{
+        "challengeId": challengeId,
         "validatorId": userId,
       }),
     );
@@ -201,12 +205,13 @@ class ChallengeService {
 
   Future validateChallengeForTeam(String authorizationHeader, String challengeId, String teamId) async {
     final http.Response response = await _client.post(
-      '$serviceBaseUrl/$challengeId/validate_for_team',
+      '$serviceBaseUrl/validate_for_team',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: authorizationHeader
       },
       body: jsonEncode(<String, String>{
+        "challengeId": challengeId,
         "validatorId": teamId,
       }),
     );
@@ -233,9 +238,10 @@ class ChallengeService {
     throw Exception("Impossible to create challenge: ${response.body}");
   }
 
+  // Update
   Future updateChallenge(String authorizationHeader, AdminChallenge challenge) async {
     final http.Response response = await _client.put(
-      '$serviceBaseUrl/admin_update/${challenge.id}',
+      '$serviceBaseUrl/admin_update',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         HttpHeaders.authorizationHeader: authorizationHeader
@@ -248,6 +254,7 @@ class ChallengeService {
     }    
   }
 
+  // Delete
   Future deleteChallenge(String authorizationHeader, AdminChallenge challenge) async {
     final http.Response response = await _client.delete(
       '$serviceBaseUrl/delete/${challenge.id}',

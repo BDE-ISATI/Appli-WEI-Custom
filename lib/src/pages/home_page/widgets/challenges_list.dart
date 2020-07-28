@@ -11,7 +11,7 @@ class ChallengesList extends StatelessWidget {
     return Consumer<UserStore>(
       builder: (context, userStore, child) {
         return FutureBuilder(
-          future: ChallengeService.instance.doneChallengesForUser(userStore.authentificationHeader, userStore.id),
+          future: ChallengeService.instance.getDoneChallengesForUser(userStore.authentificationHeader, userStore.id),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (!snapshot.hasData) {

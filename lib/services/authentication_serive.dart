@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/team_service.dart';
+import 'package:appli_wei_custom/services/user_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +30,6 @@ class AuthenticationService {
 
     return User.fromMap(<String, dynamic>{
       'id': preferences.getString("loggedUserId"),
-      'profilePicture': preferences.getString("loggedUserProfilePicture"),
       'firstName': preferences.getString("loggedUserFirstName"),
       'lastName': preferences.getString("loggedUserLastName"),
       'username': preferences.getString("loggedUserUsername"),
@@ -38,11 +38,12 @@ class AuthenticationService {
       'email': preferences.getString("loggedUserEmail"),
       'passwordHash': preferences.getString("loggedUserPasswordHash")
     })
+    ..profilePicture = preferences.getString("loggedUserProfilePicture")
     ..teamName = preferences.getString("loggedUserTeamName")
     ..teamId = preferences.getString("loggedUserTeamId");
   }
 
-  Future<User> loggin(String username, String password) async {
+  Future<User> login(String username, String password) async {
     final http.Response response = await _client.post(
       '$serviceBaseUrl/login',
       headers: <String, String>{
@@ -56,7 +57,8 @@ class AuthenticationService {
 
     if (response.statusCode == 200) {
       final User loggedUser = User.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
-      final Team userTeam = await TeamService.instance.teamForUser(loggedUser.authentificationHeader, loggedUser.id);
+      final Team userTeam = await TeamService.instance.getTeamForUser(loggedUser.authentificationHeader, loggedUser.id);
+      loggedUser.profilePicture = await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id);
       loggedUser.teamName = userTeam.name;
       loggedUser.teamId = userTeam.id;
       

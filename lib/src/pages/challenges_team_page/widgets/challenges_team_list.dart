@@ -19,7 +19,7 @@ class _ChallengesTeamListState extends State<ChallengesTeamList> {
     super.initState();
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    _challenges = ChallengeService.instance.challengesForTeam(userStore.authentificationHeader, userStore.teamId);
+    _challenges = ChallengeService.instance.getChallengesForTeam(userStore.authentificationHeader, userStore.teamId);
   }
   
   @override
@@ -72,7 +72,7 @@ class _ChallengesTeamListState extends State<ChallengesTeamList> {
   Future _getData() async {
     setState(() {
       final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-      _challenges = ChallengeService.instance.challengesForTeam(userStore.authentificationHeader, userStore.teamId);
+      _challenges = ChallengeService.instance.getChallengesForTeam(userStore.authentificationHeader, userStore.teamId);
     });
   }
 }

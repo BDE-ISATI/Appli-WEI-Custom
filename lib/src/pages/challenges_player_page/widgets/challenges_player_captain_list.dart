@@ -19,7 +19,7 @@ class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainLis
     super.initState();
 
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    _waitingChallenges = ChallengeService.instance.waitingChallenges(userStore.authentificationHeader);
+    _waitingChallenges = ChallengeService.instance.getWaitingChallenges(userStore.authentificationHeader);
   }
 
   @override
@@ -68,7 +68,7 @@ class _ChallengesPlayerCaptainListState extends State<ChallengesPlayerCaptainLis
   Future _getData() async {
     setState(() {
       final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    _waitingChallenges = ChallengeService.instance.waitingChallenges(userStore.authentificationHeader);
+    _waitingChallenges = ChallengeService.instance.getWaitingChallenges(userStore.authentificationHeader);
     });
   }
 

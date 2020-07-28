@@ -13,7 +13,8 @@ class TeamService {
 
   final _client = http.Client();
 
-  Future<Team> teamForUser(String authorizationHeader, String userId) async {
+  // Get
+  Future<Team> getTeamForUser(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/for_user/$userId',
       headers: <String, String>{
