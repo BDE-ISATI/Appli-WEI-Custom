@@ -48,7 +48,7 @@ class _AdminModifyProfilePictureState extends State<AdminModifyProfilePicture> {
     final String base64Image = base64Encode(bytes);
     
     setState(() {
-      widget.user.profilePictureId = "";
+      widget.user.profilePictureId = "modified";
       widget.user.profilePicture = base64Image;
     });
   }

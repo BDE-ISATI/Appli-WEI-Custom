@@ -146,6 +146,10 @@ class TeamService {
     if (response.statusCode != 200) {
       throw Exception("Impossible to update team: ${response.body}");
     }    
+
+    if (team.imageId == "modified") {
+      team.imageId = null;
+    }
   }
 
   Future addUserToTeam(String authorizationHeader, String teamId, String userId) async {

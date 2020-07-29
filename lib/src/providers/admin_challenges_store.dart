@@ -50,8 +50,16 @@ class AdminChallengesStore with ChangeNotifier {
 
   Future<String> updateChallenge(AdminChallenge toUpdate) async {
     try {
+      final String image = toUpdate.image;
+
+      if (toUpdate.imageId != "modified") {
+        toUpdate.image = "";
+      }
+
       await ChallengeService.instance.updateChallenge(authorizationHeader, toUpdate);
       
+      toUpdate.image = image;
+
       // We need to notify listeners to update images
       notifyListeners();
 

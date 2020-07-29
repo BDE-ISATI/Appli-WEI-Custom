@@ -37,6 +37,7 @@ class AdminChallenge {
     "id": id,
     "name": name,
     "description": description,
+    "imageId": imageId,
     "image": image,
     "value": value,
     "numberOfRepetitions": numberOfRepetitions,

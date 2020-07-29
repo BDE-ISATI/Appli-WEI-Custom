@@ -32,11 +32,16 @@ class AdminUsersStore with ChangeNotifier {
 
   Future<String> updateUser(User toUpdate) async {
     try {
-      if (toUpdate.profilePictureId == null || toUpdate.profilePictureId.isNotEmpty) {
+      final String profilePicture = toUpdate.profilePicture;
+
+      if (toUpdate.profilePictureId != "modified") {
         toUpdate.profilePicture = "";
       }
+
       await UserService.instance.updateUser(authorizationHeader, toUpdate);
       
+      toUpdate.profilePicture = profilePicture;
+
       if (toUpdate.teamId != _originalTeams[toUpdate.id]) {
         if (toUpdate.teamId == null) {
           await TeamService.instance.removeUserFromTeam(authorizationHeader, _originalTeams[toUpdate.id], toUpdate.id);

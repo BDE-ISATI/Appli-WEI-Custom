@@ -116,6 +116,10 @@ class UserService {
     if (response.statusCode != 200) {
       throw Exception("Impossible to update user: ${response.body}");
     }    
+
+    if (user.profilePictureId == "modified") {
+      user.profilePictureId = null;
+    }
   }
 
   Future updateProfilePicture(String authorizationHeader, String profilePicture) async {

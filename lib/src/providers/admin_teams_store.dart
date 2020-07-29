@@ -55,7 +55,15 @@ class AdminTeamsStore with ChangeNotifier {
 
   Future<String> updateTeam(Team toUpdate) async {
     try {
+      final String image = toUpdate.image;
+
+      if (toUpdate.imageId != "modified") {
+        toUpdate.image = "";
+      }
+
       await TeamService.instance.updateTeam(authorizationHeader, toUpdate);
+
+      toUpdate.image = image;      
       
       final User captain = await UserService.instance.getUser(authorizationHeader, toUpdate.captainId);
       toUpdate.captainName = "${captain.firstName} ${captain.lastName}"; 

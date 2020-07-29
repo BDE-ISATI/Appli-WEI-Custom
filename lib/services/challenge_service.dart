@@ -271,6 +271,10 @@ class ChallengeService {
     if (response.statusCode != 200) {
       throw Exception("Impossible to update challenge: ${response.body}");
     }    
+
+    if (challenge.imageId == "modified") {
+      challenge.imageId = null;
+    }
   }
 
   // Delete

@@ -79,6 +79,7 @@ class _AdminTeamEditPageState extends State<AdminTeamEditPage> {
     final String base64Image = base64Encode(bytes);
     
     setState(() {
+      widget.team.imageId = "modified";
       widget.team.image = base64Image;
     });
   }
