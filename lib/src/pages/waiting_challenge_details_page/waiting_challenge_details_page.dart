@@ -35,9 +35,12 @@ class _WaitingChallengeDetailsPageState extends State<WaitingChallengeDetailsPag
                 Expanded(
                   child: Hero(
                     tag: widget.heroTag,
-                    child: WaitingChallengeImage(
-                      challenge: widget.challenge,
-                      boxFit: BoxFit.cover,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: WaitingChallengeImage(
+                        challenge: widget.challenge,
+                        boxFit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
