@@ -82,7 +82,10 @@ class AdminChallengeCard extends StatelessWidget {
 
                         await Navigator.push<void>(
                           context,
-                          MaterialPageRoute(builder: (context) => AdminChallengeEditPage(challenge: challenge, adminChallengesStore: adminChallengesStore, heroTag: challenge.id,))
+                          MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(
+                            value: adminChallengesStore,
+                            child: AdminChallengeEditPage(challenge: challenge, heroTag: challenge.id,),
+                          ))
                         );
                       },
                       child: const SizedBox(width: 32, height: 32, child: Icon(Icons.edit, color: Colors.white,)),

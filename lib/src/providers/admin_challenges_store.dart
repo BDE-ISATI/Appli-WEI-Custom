@@ -64,7 +64,7 @@ class AdminChallengesStore with ChangeNotifier {
 
   Future<String> deleteChallenge(AdminChallenge toDelete) async {
     try {
-      ChallengeService.instance.deleteChallenge(authorizationHeader, toDelete);
+      ChallengeService.instance.deleteChallenge(authorizationHeader, toDelete.id);
       
       _challenges.remove(toDelete);
       notifyListeners();

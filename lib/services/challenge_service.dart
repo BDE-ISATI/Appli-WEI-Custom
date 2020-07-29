@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/models/waiting_challenges.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -157,6 +159,13 @@ class ChallengeService {
       await _cacheImage(challengeId, imageId, challengeImage);
       return challengeImage;
     }
+    else if  (response.statusCode == 204) {
+      final ByteData bytes = await rootBundle.load('assets/logo.jpg');
+      
+      final buffer = bytes.buffer;
+      return base64.encode(Uint8List.view(buffer));
+    }
+
     
     throw Exception("Can't get the image: ${response.body}");
   }
@@ -265,9 +274,9 @@ class ChallengeService {
   }
 
   // Delete
-  Future deleteChallenge(String authorizationHeader, AdminChallenge challenge) async {
+  Future deleteChallenge(String authorizationHeader, String challengeId) async {
     final http.Response response = await _client.delete(
-      '$serviceBaseUrl/delete/${challenge.id}',
+      '$serviceBaseUrl/delete/$challengeId',
       headers: <String, String>{
         HttpHeaders.authorizationHeader: authorizationHeader
       }
@@ -276,6 +285,8 @@ class ChallengeService {
     if (response.statusCode != 200) {
       throw Exception("Impossible to delete challenge: ${response.body}");
     }    
+
+    await _deleteCache(challengeId);
   }
 
   Future<String> _getCachedImage(String challengeId, String imageId) async {
@@ -293,5 +304,12 @@ class ChallengeService {
 
     preferences.setString("${challengeId}_imageId", imageId);
     preferences.setString("${challengeId}_cachedImage", image);
+  }
+
+  Future _deleteCache(String challengeId) async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    preferences.setString("${challengeId}_imageId", null);
+    preferences.setString("${challengeId}_cachedImage", null);
   }
 }

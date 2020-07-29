@@ -3,11 +3,11 @@ import 'package:appli_wei_custom/src/providers/admin_challenges_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:appli_wei_custom/src/shared/widgets/form_text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdminChallengeForm extends StatefulWidget {
-  const AdminChallengeForm({Key key, @required this.challenge, @required this.adminChallengesStore}) : super(key: key);
-  
-  final AdminChallengesStore adminChallengesStore;
+  const AdminChallengeForm({Key key, @required this.challenge}) : super(key: key);
+
   final AdminChallenge challenge;
 
   @override 
@@ -197,7 +197,8 @@ class _AdminChallengeFormState extends State<AdminChallengeForm> {
     widget.challenge.value = int.parse(_valueController.text);
     widget.challenge.numberOfRepetitions = int.parse(_numberOfRepetitionController.text);
 
-    final String response = await widget.adminChallengesStore.createChallenge(widget.challenge);
+    final AdminChallengesStore adminChallengesStore = Provider.of<AdminChallengesStore>(context, listen: false);
+    final String response = await adminChallengesStore.createChallenge(widget.challenge);
 
     if (response.isEmpty) {
       setState(() {
@@ -227,7 +228,8 @@ class _AdminChallengeFormState extends State<AdminChallengeForm> {
     widget.challenge.value = int.parse(_valueController.text);
     widget.challenge.numberOfRepetitions = int.parse(_numberOfRepetitionController.text);
 
-    final String response = await widget.adminChallengesStore.updateChallenge(widget.challenge);
+    final AdminChallengesStore adminChallengesStore = Provider.of<AdminChallengesStore>(context, listen: false);
+    final String response = await adminChallengesStore.updateChallenge(widget.challenge);
 
     if (response.isEmpty) {
       setState(() {

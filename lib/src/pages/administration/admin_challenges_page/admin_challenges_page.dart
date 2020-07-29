@@ -36,9 +36,12 @@ class AdminChallengesPage extends StatelessWidget {
                     child: Button(
                       onPressed: () async {
                         final AdminChallengesStore adminChallengesStore = Provider.of<AdminChallengesStore>(context, listen: false);
-
+                        
                         await Navigator.of(context).push<void>(
-                          MaterialPageRoute(builder: (context) => AdminChallengeEditPage(challenge: AdminChallenge(), adminChallengesStore: adminChallengesStore, heroTag: "",))
+                          MaterialPageRoute(builder: (context) => ChangeNotifierProvider.value(
+                            value: adminChallengesStore,
+                            child: AdminChallengeEditPage(challenge: AdminChallenge(), heroTag: "",),
+                          ))
                         );
                       },
                       text: "Ajouter un challenge",
