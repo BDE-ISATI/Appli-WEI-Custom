@@ -1,11 +1,10 @@
 import 'package:appli_wei_custom/models/user.dart';
-import 'package:appli_wei_custom/src/pages/administration/admin_users_page/widgets/admin_user_card.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_users_page/widgets/admin_users_filtered_list.dart';
 import 'package:appli_wei_custom/src/providers/admin_users_store.dart';
-import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AdminUserList extends StatelessWidget {
+class AdminUsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminUsersStore>(
@@ -26,7 +25,7 @@ class AdminUserList extends StatelessWidget {
 
                 final List<User> users = snapshot.data as List<User>;
 
-                return _buildList(context, users);
+                return AdminUsersFilteredList(users: users,);
               }
 
               return const Center(child: CircularProgressIndicator(),);
@@ -34,23 +33,6 @@ class AdminUserList extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildList(BuildContext context, List<User> users) {
-    final List<AdminUserCard> userCards = []; 
-    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
-
-    for (final user in users) {
-      if (user.id == userStore.id) {
-        continue;
-      }
-
-      userCards.add(AdminUserCard(user: user,));
-    }
-
-    return ListView(
-      children: userCards,
     );
   }
 

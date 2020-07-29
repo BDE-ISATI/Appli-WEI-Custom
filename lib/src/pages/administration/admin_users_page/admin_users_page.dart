@@ -1,4 +1,4 @@
-import 'package:appli_wei_custom/src/pages/administration/admin_users_page/widgets/admin_user_list.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_users_page/widgets/admin_users_list.dart';
 import 'package:appli_wei_custom/src/providers/admin_users_store.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
@@ -23,7 +23,7 @@ class AdminUsersPage extends StatelessWidget {
                     child: Text("Les utilisateurs", style: Theme.of(context).textTheme.headline1,),
                   ),
                   Expanded(
-                    child: AdminUserList(),
+                    child: AdminUsersList(),
                   ),
                 ],
               ),

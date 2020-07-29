@@ -1,8 +1,7 @@
 import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
-import 'package:appli_wei_custom/src/pages/administration/admin_challenges_page/widgets/admin_challenge_card.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_challenges_page/widgets/admin_challenges_filtered_list.dart';
 import 'package:appli_wei_custom/src/providers/admin_challenges_store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class AdminChallengesList extends StatelessWidget {
@@ -38,7 +37,7 @@ class AdminChallengesList extends StatelessWidget {
                   }
                 }
 
-                return _buildGrid(context, individualChallenges + teamChallenges);
+                return AdminChallengesFilteredList(challenges: individualChallenges + teamChallenges,);
               }
 
               return const Center(child: CircularProgressIndicator(),);
@@ -46,22 +45,6 @@ class AdminChallengesList extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildGrid(BuildContext context, List<AdminChallenge> challenges) {
-    final List<StaggeredTile> staggeredTiles = [];
-    final List<AdminChallengeCard> challengesCard = []; 
-
-    for (int i = 0; i < challenges.length; ++i) {
-      staggeredTiles.add(StaggeredTile.extent(2, i.isEven ? 272 : 300));
-      challengesCard.add(AdminChallengeCard(challenge: challenges[i],));
-    }
-
-    return StaggeredGridView.count(
-      crossAxisCount: 4,
-      staggeredTiles: staggeredTiles,
-      children: challengesCard,
     );
   }
 
