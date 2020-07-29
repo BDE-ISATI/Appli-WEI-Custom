@@ -18,7 +18,7 @@ class UserProfilePicture extends StatelessWidget {
       builder: (context, userStore, child) {
         if ((user == null && userStore.profilePicture == null) || (user != null && user.profilePicture == null)) {
           return FutureBuilder(
-            future: UserService.instance.getProfilePicture(userStore.authentificationHeader, user == null ? userStore.id : user.id),
+            future: UserService.instance.getProfilePicture(userStore.authentificationHeader, user == null ? userStore.id : user.id, user == null ? userStore.profilePictureId : user.profilePictureId),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (!snapshot.hasData) {

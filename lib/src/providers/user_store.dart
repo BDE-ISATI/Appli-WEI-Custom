@@ -42,6 +42,7 @@ class UserStore with ChangeNotifier {
   String get authentificationHeader => _user.authentificationHeader;
 
   String get profilePicture => (_user.profilePicture != null && _user.profilePicture.isNotEmpty) ? _user.profilePicture : null;
+  String get profilePictureId => _user.profilePictureId;
 
   String get fullName => "${_user.firstName} ${_user.lastName}";
   String get firstName => _user.firstName;

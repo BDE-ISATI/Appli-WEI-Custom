@@ -58,7 +58,12 @@ class AuthenticationService {
     if (response.statusCode == 200) {
       final User loggedUser = User.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
       final Team userTeam = await TeamService.instance.getTeamForUser(loggedUser.authentificationHeader, loggedUser.id);
-      loggedUser.profilePicture = await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id);
+
+      if (userTeam == null) {
+        throw Exception("Vous n'avez pas encore d'équipe attribué");
+      }
+
+      loggedUser.profilePicture = await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id, loggedUser.profilePictureId);
       loggedUser.teamName = userTeam.name;
       loggedUser.teamId = userTeam.id;
       

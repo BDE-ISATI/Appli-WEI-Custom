@@ -26,10 +26,7 @@ class AdminChallengesPage extends StatelessWidget {
                     child: Text("Les défis", style: Theme.of(context).textTheme.headline1,),
                   ),
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: AdminChallengesList(),
-                    ),
+                    child: AdminChallengesList(),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),

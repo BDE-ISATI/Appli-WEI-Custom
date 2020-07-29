@@ -2,6 +2,7 @@ class Team {
   String id;
 
   String name;
+  String captainId;
   String captainName;
   int score;
 
@@ -10,6 +11,7 @@ class Team {
   Team.fromMap(Map<String, dynamic> map) :
     id = map['id'] as String,
     name = map['name'] as String,
+    captainId = map['captainId'] as String,
     captainName = map['captainName'] as String,
     score = map['score'] as int,
     members = List<String>.from(map['members'] as List<dynamic>);
