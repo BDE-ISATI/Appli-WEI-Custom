@@ -1,17 +1,17 @@
-import 'package:appli_wei_custom/models/user.dart';
-import 'package:appli_wei_custom/src/pages/administration/admin_users_page/widgets/admin_user_card.dart';
+import 'package:appli_wei_custom/models/team.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_teams_page/widgets/admin_team_card.dart';
 import 'package:flutter/material.dart';
 
-class AdminUsersFilteredList extends StatefulWidget {
-  const AdminUsersFilteredList({Key key, @required this.users}) : super(key: key);
+class AdminTeamsFilteredList extends StatefulWidget {
+  const AdminTeamsFilteredList({Key key, @required this.teams}) : super(key: key);
 
-  final List<User> users;
+  final List<Team> teams;
 
   @override 
-  _AdminUsersFilteredListState createState() => _AdminUsersFilteredListState();
+  _AdminTeamsFilteredListState createState() => _AdminTeamsFilteredListState();
 }
 
-class _AdminUsersFilteredListState extends State<AdminUsersFilteredList> {
+class _AdminTeamsFilteredListState extends State<AdminTeamsFilteredList> {
   final TextEditingController _controller = TextEditingController();
   String _filter;
 
@@ -35,7 +35,7 @@ class _AdminUsersFilteredListState extends State<AdminUsersFilteredList> {
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: TextField(
             decoration: const InputDecoration(
-              labelText: "Chercher un utilisateur",
+              labelText: "Chercher une équipe",
             ),
             controller: _controller,
           ),
@@ -43,17 +43,14 @@ class _AdminUsersFilteredListState extends State<AdminUsersFilteredList> {
         const SizedBox(height: 8.0,),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.users.length,
+            itemCount: widget.teams.length,
             itemBuilder: (context, index) {
               return Visibility(
                 visible: 
                   _filter == null ||
                   _filter == "" ||
-                  widget.users[index].firstName.toLowerCase().contains(_filter.toLowerCase()) ||
-                  widget.users[index].lastName.toLowerCase().contains(_filter.toLowerCase()) ||
-                  widget.users[index].username.toLowerCase().contains(_filter.toLowerCase()) ||
-                  widget.users[index].email.toLowerCase().contains(_filter.toLowerCase()),
-                child: AdminUserCard(user: widget.users[index],),
+                widget.teams[index].name.toLowerCase().contains(_filter.toLowerCase()),
+                child: AdminTeamCard(team: widget.teams[index],),
               );
             },
           ),

@@ -1,4 +1,5 @@
 import 'package:appli_wei_custom/src/pages/administration/admin_challenges_page/admin_challenges_page.dart';
+import 'package:appli_wei_custom/src/pages/administration/admin_teams_page/admin_teams_page.dart';
 import 'package:appli_wei_custom/src/pages/administration/admin_users_page/admin_users_page.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,15 @@ class AdminHomePage extends StatelessWidget {
               );
             },
             text: "Les Défis",
+          ),
+          const SizedBox(height: 8.0),
+          Button(
+            onPressed: () {
+              Navigator.of(context).push<void>(
+                MaterialPageRoute(builder: (context) => AdminTeamsPage(),)
+              );
+            },
+            text: "Les Equipes",
           ),
           const SizedBox(height: 8.0),
           Button(

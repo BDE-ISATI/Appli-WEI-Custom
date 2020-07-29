@@ -54,6 +54,24 @@ class UserService {
     return result;
   }
 
+  Future<User> getUser(String authorizationHeader, String userId) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/$userId',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
+    }
+    if (response.statusCode == 404) {
+      return null;
+    }
+      
+    throw Exception("Can't get the user: ${response.body}");
+  }
+
   Future<String> getProfilePicture(String authorizationHeader, String userId, String profilePictureId) async {
     final String cachedImage = await _getCachedImage(userId, profilePictureId);
 

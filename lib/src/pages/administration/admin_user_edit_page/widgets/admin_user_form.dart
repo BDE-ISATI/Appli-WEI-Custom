@@ -162,17 +162,21 @@ class _AdminUserFormState extends State<AdminUserForm> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DropdownButton<String>(
-                isExpanded: true,
-                hint: const Text("Veuillez choisir une équipe"),
-                onChanged: (newValue) {
-                  setState(() {
-                    widget.user.teamId = newValue;
-                  });
-                },
-                value: widget.user.teamId,
-                items: dropdownItems
-              ),
+              if (_userIsCaptain) 
+                Text(widget.user.teamName, style: Theme.of(context).textTheme.headline2,)
+              else 
+                DropdownButton<String>(
+                  isExpanded: true,
+                  hint: const Text("Veuillez choisir une équipe"),
+                  onChanged: (newValue) {
+                    setState(() {
+                      widget.user.teamId = newValue;
+                    });
+                  },
+                  value: widget.user.teamId,
+                  items: dropdownItems
+                ),
+                
               const SizedBox(height: 8.0,),
               _buildRoleDropdown()
             ],
