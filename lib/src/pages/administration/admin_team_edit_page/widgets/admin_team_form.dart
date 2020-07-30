@@ -226,7 +226,7 @@ class _AdminTeamFormState extends State<AdminTeamForm> {
 
     if (response.isEmpty) {
       setState(() {
-        _statusMessage = "Défis mis à jour avec succès";
+        _statusMessage = "Equipe mis à jour avec succès";
         _captainChanged = false;
         _loading = false;
       });

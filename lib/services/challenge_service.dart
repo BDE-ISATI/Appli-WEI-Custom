@@ -115,6 +115,30 @@ class ChallengeService {
     return result;
   }
 
+  Future<List<Challenge>> getDoneChallengesForTeam(String authorizationHeader, String teamId) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/done/team/$teamId',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<Challenge> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpChallenges = jsonDecode(response.body) as List<dynamic>;
+
+      for (final challenge in httpChallenges) {
+        result.add(Challenge.fromMap(challenge as Map<String, dynamic>, isForTeam: true));
+      }
+    }
+    else { 
+      throw Exception("Can't get the done challenge for team: ${response.body}");
+    }
+
+    return result;
+  }
+
   Future<List<WaitingChallenge>> getWaitingChallenges(String authorizationHeader) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/waiting',

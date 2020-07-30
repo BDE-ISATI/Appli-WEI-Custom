@@ -1,4 +1,5 @@
 import 'package:appli_wei_custom/models/team.dart';
+import 'package:appli_wei_custom/src/pages/team_details_page/team_details_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/team_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
@@ -29,7 +30,10 @@ class TeamRankingCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(32.0),
-                child: TeamImage(team: team, width: 64.0, height: 64.0, boxFit: BoxFit.cover,)
+                child: Hero(
+                  tag: team.id,
+                  child: TeamImage(team: team, width: 64.0, height: 64.0, boxFit: BoxFit.cover,)
+                )
               ),
               const SizedBox(width: 8.0,),
               Expanded(
@@ -42,7 +46,11 @@ class TeamRankingCard extends StatelessWidget {
                     Text("Score : ${team.score}", style: Theme.of(context).textTheme.headline3.merge(TextStyle(color: textColor))),
                     const SizedBox(height: 8.0,),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        await Navigator.of(context).push<void>(
+                          MaterialPageRoute(builder: (context) => TeamDetailsPage(team: team, heroTag: team.id,))
+                        );
+                      },
                       child: Text("VOIR L'EQUIPE", style: TextStyle(color: rankColor),),
                     )
                   ],
