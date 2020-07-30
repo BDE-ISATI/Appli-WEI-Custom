@@ -75,6 +75,26 @@ class AuthenticationService {
     throw Exception("Impossible to login : ${response.body}");
   }
 
+  Future register(User user, String password) async {
+    final http.Response response = await _client.post(
+      '$serviceBaseUrl/register',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "firstName": user.firstName,
+        "lastName": user.lastName,
+        "email": user.email,
+        "username": user.username,
+        "password": password
+      }),
+    );
+
+    if (response.statusCode != 200) {
+       throw Exception("Impossible to register: ${response.body}");
+    }
+  }
+
   Future<String> updatePassword(String authorizationHeader, String oldPassword, String newPassword) async {
     final http.Response response = await _client.put(
       '$serviceBaseUrl/update/password',

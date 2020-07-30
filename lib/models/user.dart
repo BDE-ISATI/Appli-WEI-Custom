@@ -24,6 +24,8 @@ class User {
   String email;
   String passwordHash;
 
+  User({this.email, this.firstName, this.lastName, this.username});
+
   String get authentificationHeader {
     final String auth = "$id:$passwordHash";
     final String encodedAuth = utf8.fuse(base64).encode(auth);
