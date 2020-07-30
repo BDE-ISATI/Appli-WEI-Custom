@@ -54,6 +54,38 @@ class UserService {
     return result;
   }
 
+  Future<List<User>> getRanking(String authorizationHeader) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/ranking',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<User> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpUsers = jsonDecode(response.body) as List<dynamic>;
+
+      for (final user in httpUsers) {
+        final User toAdd = User.fromMap(user as Map<String, dynamic>);
+        final Team userTeam = await TeamService.instance.getTeamForUser(authorizationHeader, toAdd.id);
+        
+        if (userTeam != null) {
+          toAdd.teamName = userTeam.name;
+          toAdd.teamId = userTeam.id;
+
+          result.add(toAdd);
+        }
+      }
+    }
+    else if (response.statusCode != 204) { 
+      throw Exception("Can't get the ranking: ${response.body}");
+    }
+
+    return result;
+  }
+
   Future<User> getUser(String authorizationHeader, String userId) async {
     final http.Response response = await _client.get(
       '$serviceBaseUrl/$userId',

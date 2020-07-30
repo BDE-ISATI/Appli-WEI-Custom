@@ -5,6 +5,7 @@ import 'package:appli_wei_custom/src/pages/challenges_team_page/challenges_team_
 import 'package:appli_wei_custom/src/pages/home_page/home_page.dart';
 import 'package:appli_wei_custom/src/pages/main_page/widgets/menu_drawer.dart';
 import 'package:appli_wei_custom/src/pages/modify_profile_page/modify_profile_page.dart';
+import 'package:appli_wei_custom/src/pages/users_ranking_page/users_ranking_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,7 @@ class _MainPageState extends State<MainPage> {
       TabItem.home: HomePage(onSelectedTab: _selectePage,),
       TabItem.challengesPlayer: ChallengesPlayerPage(onSelectedTab: _selectePage,),
       TabItem.challengesTeam: ChallengesTeamPage(onSelectedTab: _selectePage,),
+      TabItem.rankingPlayers: UsersRankingPage(onSelectedTab: _selectePage,),
       TabItem.profilSettings: ModifyProfilePage(),
       TabItem.administration: AdminHomePage(),
     });

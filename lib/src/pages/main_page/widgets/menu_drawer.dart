@@ -10,8 +10,8 @@ enum TabItem {
   home,
   challengesPlayer,
   challengesTeam,
-  classmentPlayers,
-  classmentTeams,
+  rankingPlayers,
+  rankingTeams,
   profilSettings,
   administration,
 }
@@ -20,8 +20,8 @@ Map<TabItem, int> tabIndex = {
   TabItem.home: 0,
   TabItem.challengesPlayer: 1,
   TabItem.challengesTeam: 2,
-  TabItem.classmentPlayers: 3,
-  TabItem.classmentTeams: 4,
+  TabItem.rankingPlayers: 3,
+  TabItem.rankingTeams: 4,
   TabItem.profilSettings: 5,
   TabItem.administration: 6,
 };
@@ -141,18 +141,18 @@ class MenuDrawer extends StatelessWidget {
         ListTile(
           contentPadding: const EdgeInsets.all(0),
           dense: true,
-          title: Text('CLASSEMENT JOUEURS', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.classmentPlayers))),),
+          title: Text('CLASSEMENT JOUEURS', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.rankingPlayers))),),
           onTap: () {
-            onSelectedTab(TabItem.classmentPlayers);
+            onSelectedTab(TabItem.rankingPlayers);
             Navigator.of(context).pop();
           },
         ),
         ListTile(
           contentPadding: const EdgeInsets.all(0),
           dense: true,
-          title: Text('CLASSEMENT EQUIPES', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.classmentTeams))),),
+          title: Text('CLASSEMENT EQUIPES', style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: _colorForItem(context, TabItem.rankingTeams))),),
           onTap: () {
-            onSelectedTab(TabItem.classmentTeams);
+            onSelectedTab(TabItem.rankingTeams);
             Navigator.of(context).pop();
           },
         ),
