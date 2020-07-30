@@ -40,17 +40,22 @@ class _UsersRankingState extends State<UsersRanking> {
             final List<User> users = snapshot.data as List<User>;
 
             if (users.isEmpty) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Image(
-                    image: AssetImage("assets/image/logo.png"),
-                    height: 96.0,
-                    width: 96.0,
+              return Stack(
+                children: [
+                  ListView(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Image(
+                        image: AssetImage("assets/images/logo.png"),
+                        height: 96.0,
+                        width: 96.0,
+                      ),
+                      SizedBox(height: 8.0,),
+                      Text("Le classement des joueurs est caché pour le moment.")
+                    ],
                   ),
-                  SizedBox(height: 8.0,),
-                  Text("Le classement des joueurs est caché pour le moment.")
                 ],
               );
             }

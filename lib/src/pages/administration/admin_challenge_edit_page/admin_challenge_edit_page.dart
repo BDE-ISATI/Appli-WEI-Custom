@@ -79,6 +79,7 @@ class _AdminChallengeEditPageState extends State<AdminChallengeEditPage> {
     final String base64Image = base64Encode(bytes);
     
     setState(() {
+      widget.challenge.imageId = "modified";
       widget.challenge.image = base64Image;
     });
   }

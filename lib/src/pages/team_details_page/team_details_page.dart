@@ -1,8 +1,6 @@
 import 'package:appli_wei_custom/models/team.dart';
-import 'package:appli_wei_custom/src/pages/challenge_details_page/widgets/challenge_title.dart';
 import 'package:appli_wei_custom/src/pages/team_details_page/widgets/team_challenges_list.dart';
 import 'package:appli_wei_custom/src/pages/team_details_page/widgets/team_title.dart';
-import 'package:appli_wei_custom/src/shared/widgets/challenge_images/challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/team_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:flutter/material.dart';

@@ -40,17 +40,22 @@ class _TeamsRankingState extends State<TeamsRanking> {
             final List<Team> teams = snapshot.data as List<Team>;
 
             if (teams.isEmpty) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  Image(
-                    image: AssetImage("assets/image/logo.png"),
-                    height: 96.0,
-                    width: 96.0,
+              return Stack(
+                children: [
+                  ListView(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Image(
+                        image: AssetImage("assets/images/logo.png"),
+                        height: 96.0,
+                        width: 96.0,
+                      ),
+                      SizedBox(height: 8.0,),
+                      Text("Le classement des équipe est caché pour le moment.")
+                    ],
                   ),
-                  SizedBox(height: 8.0,),
-                  Text("Le classement des équipe est caché pour le moment.")
                 ],
               );
             }
