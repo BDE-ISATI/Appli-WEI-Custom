@@ -16,7 +16,7 @@ class ChallengeTitle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(challenge.name, style: Theme.of(context).textTheme.headline2,),
+          Text("${challenge.name} (${challenge.value} points)", style: Theme.of(context).textTheme.headline2,),
           const SizedBox(height: 16,),
 
           if (challenge.numberLeft == 0) ...{

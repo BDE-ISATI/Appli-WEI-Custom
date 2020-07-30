@@ -5,12 +5,13 @@ import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
 class ChallengeCard extends StatelessWidget {
-  const ChallengeCard({Key key, @required this.challenge, this.onValidated}) : super(key: key);
+  const ChallengeCard({Key key, @required this.challenge, this.onValidated, this.showButtons = true}) : super(key: key);
 
   final ValueChanged<bool> onValidated;
 
   final Challenge challenge;
-  
+  final bool showButtons;
+
   @override
   Widget build(BuildContext context) {
     return WeiCard(
@@ -53,7 +54,7 @@ class ChallengeCard extends StatelessWidget {
                   onTap: () async {
                     final bool validated = await Navigator.push<bool>(
                       context,
-                      MaterialPageRoute(builder: (context) => ChallengeDetailsPage(challenge: challenge, heroTag: challenge.id,))
+                      MaterialPageRoute(builder: (context) => ChallengeDetailsPage(challenge: challenge, heroTag: challenge.id, showButtons: showButtons,))
                     );
 
                     if (validated != null && onValidated != null) {

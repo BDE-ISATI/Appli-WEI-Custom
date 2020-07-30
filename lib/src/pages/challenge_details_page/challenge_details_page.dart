@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:appli_wei_custom/models/challenge.dart';
+import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/challenge_service.dart';
+import 'package:appli_wei_custom/services/team_service.dart';
 import 'package:appli_wei_custom/src/pages/challenge_details_page/widgets/challenge_title.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
@@ -14,10 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ChallengeDetailsPage extends StatefulWidget {
-  const ChallengeDetailsPage({Key key, @required this.challenge, this.heroTag}) : super(key: key);
+  const ChallengeDetailsPage({Key key, @required this.challenge, this.heroTag, this.showButtons = true}) : super(key: key);
   
   final Challenge challenge;
   final String heroTag;
+
+  final bool showButtons;
 
   @override 
   _ChallengeDetailsPageState createState() => _ChallengeDetailsPageState();
@@ -27,6 +31,16 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
   bool _sendingValidation = false;
   bool _isValidatingChallenge = false;
   String _errorMessage = "";
+
+  String _teamToValidate = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+    _teamToValidate = userStore.teamId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +74,13 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
                         ),
                         if (_errorMessage.isNotEmpty) 
                           Text(_errorMessage),
-                        if (!_sendingValidation && !_isValidatingChallenge)
-                          _buildButton(context)
-                        else
-                          const Center(child: CircularProgressIndicator(),)
+                        if (widget.showButtons)
+                          if (!_sendingValidation && !_isValidatingChallenge) ...{
+                            _buildTeamSelector(),
+                            _buildButton(context)
+                          }
+                          else
+                            const Center(child: CircularProgressIndicator(),)
                       ],
                     ),
                   ),
@@ -84,29 +101,68 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     );
   }
 
+  Widget _buildTeamSelector() {
+    final UserStore userStore = Provider.of<UserStore>(context);
+
+    if (!widget.challenge.isForTeam || !userStore.hasPermission(UserRoles.administrator)) {
+      return Container();
+    }
+
+    return FutureBuilder(
+      future: TeamService.instance.getTeams(userStore.authentificationHeader),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (!snapshot.hasData || snapshot.hasError) {
+            return const Center(child: Text("Impossible de récupérer les équipes..."),);
+          }
+
+          final List<Team> teams = snapshot.data as List<Team>;
+          final List<DropdownMenuItem<String>> dropdownItems = [];
+          
+          for (final team in teams) {
+            dropdownItems.add(DropdownMenuItem<String>(
+              value: team.id,
+              child: Text(team.name),
+            ));
+          }
+
+          return DropdownButton<String>(
+            isExpanded: true,
+            hint: const Text("Veuillez choisir une équipe"),
+            onChanged: (newValue) {
+              setState(() {
+                _teamToValidate = newValue;
+              });
+            },
+            value: _teamToValidate,
+            items: dropdownItems
+          );
+        }
+
+        return const Center(child: LinearProgressIndicator());
+      },
+    );
+  }
   Widget _buildButton(BuildContext context) {
     final UserStore userStore = Provider.of<UserStore>(context);
 
     if (widget.challenge.isForTeam) {
       if (userStore.hasPermission(UserRoles.captain)) {
         return Button(
-          onPressed: (widget.challenge.numberLeft <= 0) ? null : () async {
+          onPressed: (widget.challenge.numberLeft <= 0 && !userStore.hasPermission(UserRoles.administrator)) ? null : () async {
             await _validateChallenge();
           },
-          text: "Valider le défis",
+          text: userStore.hasPermission(UserRoles.administrator) ? "Valider le défis pour cette équipe" : "Valider le défis",
         );
       }
     }
-    else {
-      return Button(
-        onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
-          await _sendValidationProof(context);
-        },
-        text: "Valider le défis",
-      );
-    }
 
-    return Container();
+    return Button(
+      onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
+        await _sendValidationProof(context);
+      },
+      text: "Valider le défis",
+    );
   }
 
   Future _sendValidationProof(BuildContext context) async {
@@ -152,7 +208,7 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
 
     try {
-      await ChallengeService.instance.validateChallengeForTeam(userStore.authentificationHeader, widget.challenge.id, userStore.teamId);
+      await ChallengeService.instance.validateChallengeForTeam(userStore.authentificationHeader, widget.challenge.id, _teamToValidate);
 
       Navigator.of(context).pop(true);
     }

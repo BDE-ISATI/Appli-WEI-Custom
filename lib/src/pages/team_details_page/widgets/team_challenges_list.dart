@@ -52,7 +52,7 @@ class TeamChallengesList extends StatelessWidget {
       itemBuilder: (context, index) {
         return SizedBox(
           width: 200,
-          child: ChallengeCard(challenge: challenges[index],)
+          child: ChallengeCard(challenge: challenges[index], showButtons: false,)
         );
       },
     );
