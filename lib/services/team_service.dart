@@ -60,6 +60,30 @@ class TeamService {
     return result;
   }
 
+  Future<List<Team>> getRanking(String authorizationHeader) async {
+    final http.Response response = await _client.get(
+      '$serviceBaseUrl/ranking',
+      headers: <String, String>{
+        HttpHeaders.authorizationHeader: authorizationHeader
+      },
+    );
+
+    final List<Team> result = [];
+
+    if (response.statusCode == 200) {
+      final List<dynamic> httpTeams = jsonDecode(response.body) as List<dynamic>;
+
+      for (final team in httpTeams) {
+        result.add(Team.fromMap(team as Map<String, dynamic>));
+      }
+    }
+    else if (response.statusCode != 204) {
+      throw Exception("Can't get the teams: ${response.body}");
+    }
+
+    return result;
+  }
+
   Future<String> getTeamImage(String authorizationHeader, String teamId, String imageId) async {
     final String cachedImage = await _getCachedImage(teamId, imageId);
 
