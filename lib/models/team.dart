@@ -29,6 +29,7 @@ class Team {
   
   String toJson() => jsonEncode(<String, dynamic>{
     "id": id,
+    "imageId": imageId,
     "image": image,
     "name": name,
     "captainId": captainId,
