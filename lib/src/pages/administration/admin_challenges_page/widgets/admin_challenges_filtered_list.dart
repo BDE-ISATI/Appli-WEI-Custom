@@ -1,5 +1,6 @@
 import 'package:appli_wei_custom/models/administration/admin_challenge.dart';
 import 'package:appli_wei_custom/src/pages/administration/admin_challenges_page/widgets/admin_challenge_card.dart';
+import 'package:appli_wei_custom/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -55,13 +56,14 @@ class _AdminChallengesFilteredListState extends State<AdminChallengesFilteredLis
         const SizedBox(height: 8.0,),
         Expanded(
           child: StaggeredGridView.countBuilder(
-            crossAxisCount: 4,
+            crossAxisCount: responsiveCrossAxisCount(context),
             itemCount: _showedChallenged.length,
             itemBuilder: (context, index) {
               return AdminChallengeCard(challenge: _showedChallenged[index],);
             },
             staggeredTileBuilder: (index) {
-              return StaggeredTile.extent(2, index.isEven ? 272 : 300);
+              return StaggeredTile.count(1, index.isEven ? 1.5 : 1.8);
+
             },
           ),
         )

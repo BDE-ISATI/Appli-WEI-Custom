@@ -1,6 +1,7 @@
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/services/challenge_service.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
+import 'package:appli_wei_custom/src/shared/utils.dart';
 import 'package:appli_wei_custom/src/shared/widgets/challenge_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -54,12 +55,12 @@ class _ChallengesPlayerListState extends State<ChallengesPlayerList> {
     final List<ChallengeCard> challengesCard = []; 
 
     for (int i = 0; i < challenges.length; ++i) {
-      staggeredTiles.add(StaggeredTile.extent(2, i.isEven ? 272 : 300));
+      staggeredTiles.add(StaggeredTile.count(1, i.isEven ? 1.5 : 1.8));
       challengesCard.add(ChallengeCard(challenge: challenges[i]));
     }
 
     return StaggeredGridView.count(
-      crossAxisCount: 4,
+      crossAxisCount: responsiveCrossAxisCount(context),
       staggeredTiles: staggeredTiles,
       children: challengesCard,
     );
