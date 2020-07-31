@@ -18,7 +18,7 @@ class AdminChallengeImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserStore>(
       builder: (context, userStore, child) {
-        if (challenge.image == null || challenge.image.isEmpty) {
+        if (challenge.image == null) {
           return FutureBuilder(
             future: ChallengeService.instance.getChallengeImage(userStore.authentificationHeader, challenge.id, challenge.imageId),
             builder: (context, snapshot) {
@@ -31,10 +31,10 @@ class AdminChallengeImage extends StatelessWidget {
                   );
                 }
 
-                challenge.image = snapshot.data as String;
+                challenge.image = MemoryImage(base64Decode(snapshot.data as String));
 
-                return Image.memory(
-                  base64Decode(challenge.image),
+                return Image(
+                  image: challenge.image,
                   height: height,
                   fit: boxFit,
                 );
@@ -45,8 +45,8 @@ class AdminChallengeImage extends StatelessWidget {
           );
         }
 
-        return Image.memory(
-          base64Decode(challenge.image.toString()),
+        return Image(
+          image: challenge.image,
           height: height,
           fit: boxFit,
         );

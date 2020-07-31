@@ -18,7 +18,7 @@ class WaitingChallengeImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserStore>(
       builder: (context, userStore, child) {
-        if (challenge.image == null || challenge.image.isEmpty) {
+        if (challenge.image == null) {
           return FutureBuilder(
             future: ChallengeService.instance.getChallengeImage(userStore.authentificationHeader, challenge.id, challenge.imageId),
             builder: (context, snapshot) {
@@ -27,10 +27,10 @@ class WaitingChallengeImage extends StatelessWidget {
                   return const Center(child: Text("Image not loaded"));
                 }
 
-                challenge.image = snapshot.data as String;
+                challenge.image = MemoryImage(base64Decode(snapshot.data as String));
 
-                return Image.memory(
-                  base64Decode(challenge.image),
+                return Image(
+                  image: challenge.image,
                   height: height,
                   fit: boxFit,
                 );
@@ -41,8 +41,8 @@ class WaitingChallengeImage extends StatelessWidget {
           );
         }
 
-        return Image.memory(
-          base64Decode(challenge.image.toString()),
+        return Image(
+          image: challenge.image,
           height: height,
           fit: boxFit,
         );

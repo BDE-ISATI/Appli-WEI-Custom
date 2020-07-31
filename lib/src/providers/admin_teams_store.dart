@@ -30,11 +30,11 @@ class AdminTeamsStore with ChangeNotifier {
   }
 
   Future<String> createTeam(Team toCreate) async {
-    if (toCreate.image.isEmpty) {
+    if (toCreate.image == null) {
       final ByteData bytes = await rootBundle.load('assets/logo.jpg');
       
       final buffer = bytes.buffer;
-      toCreate.image = base64.encode(Uint8List.view(buffer));
+      toCreate.image = MemoryImage(Uint8List.view(buffer));
     }
 
     try {
@@ -55,10 +55,10 @@ class AdminTeamsStore with ChangeNotifier {
 
   Future<String> updateTeam(Team toUpdate) async {
     try {
-      final String image = toUpdate.image;
+      final MemoryImage image = toUpdate.image;
 
       if (toUpdate.imageId != "modified") {
-        toUpdate.image = "";
+        toUpdate.image = null;
       }
 
       await TeamService.instance.updateTeam(authorizationHeader, toUpdate);

@@ -41,7 +41,7 @@ class UserStore with ChangeNotifier {
   String get id => _user.id;
   String get authentificationHeader => _user.authentificationHeader;
 
-  String get profilePicture => (_user.profilePicture != null && _user.profilePicture.isNotEmpty) ? _user.profilePicture : null;
+  MemoryImage get profilePicture => (_user.profilePicture != null) ? _user.profilePicture : null;
   String get profilePictureId => _user.profilePictureId;
 
   String get fullName => "${_user.firstName} ${_user.lastName}";
@@ -54,7 +54,7 @@ class UserStore with ChangeNotifier {
   String get teamName => _user.teamName;
   String get teamId => _user.teamId;
 
-  void updateProfilePicture(String newProfilePicture) {
+  void updateProfilePicture(MemoryImage newProfilePicture) {
     _user.profilePicture = newProfilePicture;
 
     notifyListeners();

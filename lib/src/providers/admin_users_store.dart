@@ -32,10 +32,10 @@ class AdminUsersStore with ChangeNotifier {
 
   Future<String> updateUser(User toUpdate) async {
     try {
-      final String profilePicture = toUpdate.profilePicture;
+      final MemoryImage profilePicture = toUpdate.profilePicture;
 
       if (toUpdate.profilePictureId != "modified") {
-        toUpdate.profilePicture = "";
+        toUpdate.profilePicture = null;
       }
 
       await UserService.instance.updateUser(authorizationHeader, toUpdate);

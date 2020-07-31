@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart';
+
 class WaitingChallenge {
   String id;
 
   String playerId;
   String playerName;
 
-  String image = "";
+  MemoryImage image;
   String imageId;
 
   String name;

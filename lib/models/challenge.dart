@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class Challenge {
   String id;
 
@@ -5,10 +7,10 @@ class Challenge {
   String description;
   int value;
 
-  String image = "";
+  ImageProvider<dynamic> image;
   String imageId;
 
-  bool isWaitingValidation;
+  bool isWaitingValidation = false;
   int numberLeft;
 
   final bool isForTeam;

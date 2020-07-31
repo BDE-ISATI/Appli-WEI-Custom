@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class AdminChallenge {
   String id;
 
@@ -8,7 +10,7 @@ class AdminChallenge {
   int value;
   int numberOfRepetitions;
 
-  String image = "";
+  MemoryImage image;
   String imageId;
 
   bool isVisible;
@@ -19,7 +21,6 @@ class AdminChallenge {
     description = "",
     value = 0,
     numberOfRepetitions = 0,
-    image = "",
     isVisible = false,
     isForTeam = false;
 
@@ -38,7 +39,7 @@ class AdminChallenge {
     "name": name,
     "description": description,
     "imageId": imageId,
-    "image": image,
+    "image": base64Encode(image.bytes),
     "value": value,
     "numberOfRepetitions": numberOfRepetitions,
     "isForTeam": isForTeam,

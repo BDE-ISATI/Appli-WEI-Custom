@@ -40,7 +40,7 @@ class _AdminModifyProfilePictureState extends State<AdminModifyProfilePicture> {
   }
 
   Future _updateProfilePicture() async {
-    String base64Image;
+    MemoryImage memoryImage;
 
     if (kIsWeb) {
       final html.FileUploadInputElement input = html.FileUploadInputElement();
@@ -59,7 +59,9 @@ class _AdminModifyProfilePictureState extends State<AdminModifyProfilePicture> {
       await reader.onLoad.first;
       
       final String encoded = reader.result as String;
-      base64Image = encoded.replaceFirst(RegExp('data:image/[^;]+;base64,'), '');
+      final String base64Image = encoded.replaceFirst(RegExp('data:image/[^;]+;base64,'), '');
+
+      memoryImage = MemoryImage(base64Decode(base64Image));
     }
     else {
       final File image = await FilePicker.getFile(type: FileType.image);
@@ -69,12 +71,12 @@ class _AdminModifyProfilePictureState extends State<AdminModifyProfilePicture> {
       }
       
       final bytes = await image.readAsBytes();
-      base64Image = base64Encode(bytes);
+      memoryImage = MemoryImage(bytes);
     }  
     
     setState(() {
       widget.user.profilePictureId = "modified";
-      widget.user.profilePicture = base64Image;
+      widget.user.profilePicture = memoryImage;
     });
   }
 }

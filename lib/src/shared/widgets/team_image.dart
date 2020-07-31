@@ -19,7 +19,7 @@ class TeamImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserStore>(
       builder: (context, userStore, child) {
-        if (team.image == null || team.image.isEmpty) {
+        if (team.image == null) {
           return FutureBuilder(
             future: TeamService.instance.getTeamImage(userStore.authentificationHeader, team.id, team.imageId),
             builder: (context, snapshot) {
@@ -33,10 +33,10 @@ class TeamImage extends StatelessWidget {
                   );
                 }
 
-                team.image = snapshot.data as String;
+                team.image = MemoryImage(base64Decode(snapshot.data as String));
 
-                return Image.memory(
-                  base64Decode(team.image),
+                return Image(
+                  image: team.image,
                   height: height,
                   width: width,
                   fit: boxFit,
@@ -48,8 +48,8 @@ class TeamImage extends StatelessWidget {
           );
         }
 
-        return Image.memory(
-          base64Decode(team.image.toString()),
+        return Image(
+          image: team.image,
           height: height,
           width: width,
           fit: boxFit,

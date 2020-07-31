@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 mixin UserRoles {
   static String defaultRole = "Default";
   static String captain = "Captain";
@@ -9,7 +11,7 @@ mixin UserRoles {
 class User {
   String id;
 
-  String profilePicture;
+  MemoryImage profilePicture;
   String profilePictureId;
 
   String firstName;
@@ -46,7 +48,7 @@ class User {
 
   String toJson() => jsonEncode(<String, dynamic>{
     "id": id,
-    "profilePicture": profilePicture,
+    "profilePicture": base64Encode(profilePicture.bytes),
     "profilePictureId": profilePictureId,
     "firstName": firstName,
     "lastName": lastName,

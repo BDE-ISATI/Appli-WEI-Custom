@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 class Team {
   String id;
 
-  String image;
+  MemoryImage image;
   String imageId;
 
   String name;
@@ -30,7 +32,7 @@ class Team {
   String toJson() => jsonEncode(<String, dynamic>{
     "id": id,
     "imageId": imageId,
-    "image": image,
+    "image": base64Encode(image.bytes),
     "name": name,
     "captainId": captainId,
     "score": score

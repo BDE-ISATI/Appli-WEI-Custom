@@ -25,15 +25,17 @@ class UserProfilePicture extends StatelessWidget {
                   return const Center(child: Text("Image not loaded"));
                 }
 
+                final MemoryImage image = MemoryImage(base64Decode(snapshot.data as String));
+
                 if (user != null) {
-                  user.profilePicture = snapshot.data as String;
+                  user.profilePicture = image;
                 }
                 else {
-                  userStore.updateProfilePicture(snapshot.data as String);
+                  userStore.updateProfilePicture(image);
                 }
 
-                return Image.memory(
-                  base64Decode(snapshot.data as String),
+                return Image(
+                  image: image,
                   height: size,
                   width: size,
                   fit: BoxFit.fitHeight,
@@ -45,8 +47,8 @@ class UserProfilePicture extends StatelessWidget {
           );
         }
 
-        return Image.memory(
-          base64Decode(user != null ? user.profilePicture : userStore.profilePicture),
+        return Image(
+          image: (user != null) ? user.profilePicture : userStore.profilePicture,
           height: size,
           width: size,
           fit: BoxFit.fitHeight,

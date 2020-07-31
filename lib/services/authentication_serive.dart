@@ -5,6 +5,7 @@ import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
 import 'package:appli_wei_custom/services/team_service.dart';
 import 'package:appli_wei_custom/services/user_service.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,7 +40,7 @@ class AuthenticationService {
       'email': preferences.getString("loggedUserEmail"),
       'passwordHash': preferences.getString("loggedUserPasswordHash")
     })
-    ..profilePicture = preferences.getString("loggedUserProfilePicture")
+    ..profilePicture = MemoryImage(base64Decode(preferences.getString("loggedUserProfilePicture")))
     ..teamName = preferences.getString("loggedUserTeamName")
     ..teamId = preferences.getString("loggedUserTeamId");
   }
@@ -73,7 +74,7 @@ class AuthenticationService {
         loggedUser.teamId = userTeam.id;
       }
 
-      loggedUser.profilePicture = await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id, loggedUser.profilePictureId);
+      loggedUser.profilePicture = MemoryImage(base64Decode(await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id, loggedUser.profilePictureId)));
         
       await _saveLoggedUserToSettings(loggedUser);
 
@@ -148,7 +149,7 @@ class AuthenticationService {
     final SharedPreferences preferences = await SharedPreferences.getInstance();
 
     preferences.setString("loggedUserId", loggedUser.id);
-    preferences.setString("loggedUserProfilePicture", loggedUser.profilePicture);
+    preferences.setString("loggedUserProfilePicture", base64Encode(loggedUser.profilePicture.bytes));
     preferences.setString("loggedUserFirstName", loggedUser.firstName);
     preferences.setString("loggedUserLastName", loggedUser.lastName);
     preferences.setString("loggedUserUsername", loggedUser.username);

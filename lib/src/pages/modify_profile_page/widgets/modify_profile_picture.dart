@@ -104,7 +104,7 @@ class _ModifyProfilePictureState extends State<ModifyProfilePicture> {
     try {
       await UserService.instance.updateProfilePicture(userStore.authentificationHeader, base64Image);
 
-      userStore.updateProfilePicture(base64Image);
+      userStore.updateProfilePicture(MemoryImage(base64Decode(base64Image)));
       
       setState(() {
         _isUploadingPofilePicture = false;
