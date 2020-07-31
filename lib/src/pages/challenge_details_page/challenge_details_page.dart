@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:universal_html/prefer_universal/html.dart' as html;
 
 import 'package:appli_wei_custom/models/challenge.dart';
 import 'package:appli_wei_custom/models/team.dart';
@@ -12,6 +13,7 @@ import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:appli_wei_custom/src/shared/widgets/challenge_images/challenge_image.dart';
 import 'package:appli_wei_custom/src/shared/widgets/top_navigation_bar.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -170,18 +172,44 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       _sendingValidation = true;
     });
 
-    final File image = await FilePicker.getFile(type: FileType.image);
-    
-    if (image == null) {
-      setState(() {
-        _sendingValidation = false;
-      });
-      return;
+    String base64Image;
+
+    if (kIsWeb) {
+      final html.FileUploadInputElement input = html.FileUploadInputElement();
+      input.accept = 'image/*';
+      input.click();
+      
+      await input.onChange.first;
+      
+      if (input.files.isEmpty) {
+        setState(() {
+          _sendingValidation = false;
+        });
+        return;
+      }
+
+      final reader = html.FileReader();
+      reader.readAsDataUrl(input.files[0]);
+      
+      await reader.onLoad.first;
+      
+      final String encoded = reader.result as String;
+      base64Image = encoded.replaceFirst(RegExp('data:image/[^;]+;base64,'), '');
     }
-
-
-    final bytes = await image.readAsBytes();
-    final String base64Image = base64Encode(bytes);
+    else {
+      final File image = await FilePicker.getFile(type: FileType.image);
+      
+      if (image == null) {
+        setState(() {
+          _sendingValidation = false;
+        });
+        return;
+      }
+      
+      final bytes = await image.readAsBytes();
+      base64Image = base64Encode(bytes);
+    }  
+    
     final UserStore userStore = Provider.of<UserStore>(context, listen: false);
 
     try {

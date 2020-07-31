@@ -11,7 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthenticationService {
   AuthenticationService._privateConstructor();
 
-  final String serviceBaseUrl = "https://192.168.1.38:45455/api/authentication";
+  // final String serviceBaseUrl = "https://192.168.1.38:45455/api/authentication";
+  final String serviceBaseUrl = "https://appli.wei.isati.org/api/authentication";
 
   static final AuthenticationService instance = AuthenticationService._privateConstructor();
 
@@ -59,14 +60,21 @@ class AuthenticationService {
       final User loggedUser = User.fromMap(jsonDecode(response.body) as Map<String, dynamic>);
       final Team userTeam = await TeamService.instance.getTeamForUser(loggedUser.authentificationHeader, loggedUser.id);
 
-      if (userTeam == null) {
+      if (userTeam == null && loggedUser.role != UserRoles.administrator) {
         throw Exception("Vous n'avez pas encore d'équipe attribué");
       }
 
+      if (userTeam == null) {
+        loggedUser.teamName = "Pas d'équipe";
+        loggedUser.teamId = "";
+      }
+      else {
+        loggedUser.teamName = userTeam.name;
+        loggedUser.teamId = userTeam.id;
+      }
+
       loggedUser.profilePicture = await UserService.instance.getProfilePicture(loggedUser.authentificationHeader, loggedUser.id, loggedUser.profilePictureId);
-      loggedUser.teamName = userTeam.name;
-      loggedUser.teamId = userTeam.id;
-      
+        
       await _saveLoggedUserToSettings(loggedUser);
 
       return loggedUser;

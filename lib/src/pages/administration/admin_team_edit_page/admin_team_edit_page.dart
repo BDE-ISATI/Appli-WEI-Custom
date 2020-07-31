@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:universal_html/prefer_universal/html.dart' as html;
 
 import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/src/pages/administration/admin_team_edit_page/widgets/admin_team_form.dart';
@@ -69,14 +71,37 @@ class _AdminTeamEditPageState extends State<AdminTeamEditPage> {
   }
 
   Future _updateTeamPicture() async {
-    final File image = await FilePicker.getFile(type: FileType.image);
-    
-    if (image == null) {
-      return;
-    }
+    String base64Image;
 
-    final bytes = await image.readAsBytes();
-    final String base64Image = base64Encode(bytes);
+    if (kIsWeb) {
+      final html.FileUploadInputElement input = html.FileUploadInputElement();
+      input.accept = 'image/*';
+      input.click();
+      
+      await input.onChange.first;
+      
+      if (input.files.isEmpty) {
+         return null;
+      }
+
+      final reader = html.FileReader();
+      reader.readAsDataUrl(input.files[0]);
+      
+      await reader.onLoad.first;
+      
+      final String encoded = reader.result as String;
+      base64Image = encoded.replaceFirst(RegExp('data:image/[^;]+;base64,'), '');
+    }
+    else {
+      final File image = await FilePicker.getFile(type: FileType.image);
+      
+      if (image == null) {
+        return;
+      }
+      
+      final bytes = await image.readAsBytes();
+      base64Image = base64Encode(bytes);
+    }  
     
     setState(() {
       widget.team.imageId = "modified";

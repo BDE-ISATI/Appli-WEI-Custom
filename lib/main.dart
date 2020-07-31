@@ -11,7 +11,7 @@ class DebugHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext context){
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> host == "192.168.1.38";
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
   }
 }
 
