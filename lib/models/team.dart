@@ -32,7 +32,7 @@ class Team {
   String toJson() => jsonEncode(<String, dynamic>{
     "id": id,
     "imageId": imageId,
-    "image": base64Encode(image.bytes),
+    "image": image != null ? base64Encode(image.bytes) : null,
     "name": name,
     "captainId": captainId,
     "score": score

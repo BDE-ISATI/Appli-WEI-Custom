@@ -48,7 +48,7 @@ class User {
 
   String toJson() => jsonEncode(<String, dynamic>{
     "id": id,
-    "profilePicture": base64Encode(profilePicture.bytes),
+    "profilePicture": profilePicture != null ? base64Encode(profilePicture.bytes) : null, 
     "profilePictureId": profilePictureId,
     "firstName": firstName,
     "lastName": lastName,

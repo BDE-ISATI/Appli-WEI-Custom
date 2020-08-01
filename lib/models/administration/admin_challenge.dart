@@ -39,7 +39,7 @@ class AdminChallenge {
     "name": name,
     "description": description,
     "imageId": imageId,
-    "image": base64Encode(image.bytes),
+    "image": image != null ? base64Encode(image.bytes) : null,
     "value": value,
     "numberOfRepetitions": numberOfRepetitions,
     "isForTeam": isForTeam,
