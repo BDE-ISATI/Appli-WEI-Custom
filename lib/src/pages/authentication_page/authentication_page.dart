@@ -72,7 +72,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
     if (registered != null && registered) {
       setState(() {
-        _statusMessage = "Vous avez bien été enregistré. Confirmez votre adresse mail et attendez qu'une équipe vous soit attribuée.";
+        _statusMessage = "Vous avez bien été enregistré. Attendez qu'une équipe vous soit attribuée.";
       });
     }
   }
