@@ -25,6 +25,7 @@ class User {
 
   String email;
   String passwordHash;
+  String updatedPassword;
 
   User({this.email, this.firstName, this.lastName, this.username});
 
@@ -53,6 +54,7 @@ class User {
     "firstName": firstName,
     "lastName": lastName,
     "username": username,
+    "updatedPassword": updatedPassword,
     "email": email,
     "role": role,
     "score": score

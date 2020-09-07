@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TeamService {
   TeamService._privateConstructor();
 
-  // final String serviceBaseUrl = "https://192.168.1.38:45455/api/teams";
+  // final String serviceBaseUrl = "https://192.168.0.18:45455/api/teams";
   final String serviceBaseUrl = "https://appli.wei.isati.org/api/teams";
 
   static final TeamService instance = TeamService._privateConstructor();

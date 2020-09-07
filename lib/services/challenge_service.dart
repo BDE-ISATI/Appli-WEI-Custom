@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ChallengeService {
   ChallengeService._privateConstructor();
 
-  // final String serviceBaseUrl = "https://192.168.1.38:45455/api/challenges";
+  // final String serviceBaseUrl = "https://192.168.0.18:45455/api/challenges";
   final String serviceBaseUrl = "https://appli.wei.isati.org/api/challenges";
 
   static final ChallengeService instance = ChallengeService._privateConstructor();

@@ -23,6 +23,8 @@ class _AdminUserFormState extends State<AdminUserForm> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmationController = TextEditingController();
 
   bool _userIsCaptain = false;
 
@@ -78,6 +80,32 @@ class _AdminUserFormState extends State<AdminUserForm> {
                         validator: (String value) {
                           if (value.isEmpty) {
                             return "Veuillez rentrer un nom";
+                          }
+
+                          return null;
+                        },
+                      ),
+                      // ignore: equal_elements_in_set
+                      const SizedBox(height: 8.0,),
+                      FormTextInput(
+                        controller: _passwordController,
+                        hintText: "Entrez votre mot de passe",
+                        labelText: "Mot de Passe",
+                        obscureText: true,
+                        validator: (String value) {
+                          return null;
+                        },
+                      ),
+                      // ignore: equal_elements_in_set
+                      const SizedBox(height: 8.0,),
+                      FormTextInput(
+                        controller: _passwordConfirmationController,
+                        hintText: "Confirmer votre mot de passe",
+                        labelText: "Confirmation de mot de passe",
+                        obscureText: true,
+                        validator: (String value) {
+                          if (value != _passwordController.text) {
+                            return "Le mot de passe et sa confirmation ne correspondent pas";
                           }
 
                           return null;
@@ -235,6 +263,7 @@ class _AdminUserFormState extends State<AdminUserForm> {
     widget.user.firstName = _firstNameController.text;
     widget.user.lastName = _lastNameController.text;
     widget.user.score = int.parse(_scoreController.text);
+    widget.user.updatedPassword = _passwordController.text;
 
     final AdminUsersStore adminUsersStore = Provider.of<AdminUsersStore>(context, listen: false);
     final String response = await adminUsersStore.updateUser(widget.user);

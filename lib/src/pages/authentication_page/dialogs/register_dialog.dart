@@ -56,9 +56,9 @@ class _RegisterDialogState extends State<RegisterDialog> {
                   hintText: "Entrez votre email",
                   labelText: "Email",
                   validator: (String value) {
-                    if (value.isEmpty || !value.contains('etudiant.univ-rennes1.fr')) {
-                      return "Veuillez rentrer une adresse mail étudiante";
-                    }
+                    // if (value.isEmpty || !value.contains('etudiant.univ-rennes1.fr')) {
+                    //   return "Veuillez rentrer une adresse mail étudiante";
+                    // }
 
                     return null;
                   },
