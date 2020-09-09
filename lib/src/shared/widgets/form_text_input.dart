@@ -31,7 +31,7 @@ class FormTextInput extends StatelessWidget {
         keyboardType: inputType,
         inputFormatters: <TextInputFormatter>[
           if (inputType == TextInputType.number)
-            WhitelistingTextInputFormatter.digitsOnly
+            FilteringTextInputFormatter.digitsOnly
         ],
         maxLines: inputType == TextInputType.multiline ? 4 : 1,
         decoration: InputDecoration(
