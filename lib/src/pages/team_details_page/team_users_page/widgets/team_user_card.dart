@@ -1,5 +1,6 @@
 import 'package:appli_wei_custom/models/team.dart';
 import 'package:appli_wei_custom/models/user.dart';
+import 'package:appli_wei_custom/src/pages/user_profile_page/user_profile_page.dart';
 import 'package:appli_wei_custom/src/providers/user_store.dart';
 import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:appli_wei_custom/src/shared/widgets/user_profile_picture.dart';
@@ -44,7 +45,11 @@ class TeamUserCard extends StatelessWidget {
                       visible: userStore.hasPermission(UserRoles.administrator) || (userStore.hasPermission(UserRoles.captain) && userStore.teamId == team.id),
                       child: Button(
                         text: "Voire le profil",
-                        onPressed: () async {},
+                        onPressed: () async {
+                          await Navigator.of(context).push<void>(
+                            MaterialPageRoute(builder: (context) => UserProfilePage(user: user,))
+                          );
+                        },
                       ),
                     )
                   ],
