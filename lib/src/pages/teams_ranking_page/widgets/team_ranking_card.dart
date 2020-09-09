@@ -60,7 +60,7 @@ class TeamRankingCard extends StatelessWidget {
               Expanded(
                 flex: 3,
                 child: Center(
-                  child: Text("#$position", style: TextStyle(fontSize: 48, fontFamily: "Futura Light", color: rankColor)),
+                  child: Text("#$position", style: TextStyle(fontSize: 32, fontFamily: "Futura Light", color: rankColor)),
                 ),
               )
             ],

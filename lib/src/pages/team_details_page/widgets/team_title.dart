@@ -37,7 +37,7 @@ class TeamTitle extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(team.score.toString(), style: TextStyle(fontSize: 52, fontFamily: "Futura Light", color: Theme.of(context).accentColor),),
+                Text(team.score.toString(), style: TextStyle(fontSize: 42, fontFamily: "Futura Light", color: Theme.of(context).accentColor),),
                 Text("Score", style: Theme.of(context).textTheme.headline4,)
               ],
             ),
