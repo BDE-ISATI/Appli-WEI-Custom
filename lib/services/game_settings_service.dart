@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 class GameSettingsService {
   GameSettingsService._privateConstructor();
 
+
   // final String serviceBaseUrl = "https://192.168.0.18:45455/api/settings";
   final String serviceBaseUrl = "https://appli.wei.isati.org/api/settings";
 

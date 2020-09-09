@@ -44,7 +44,7 @@ class TeamUserCard extends StatelessWidget {
                     Visibility(
                       visible: userStore.hasPermission(UserRoles.administrator) || (userStore.hasPermission(UserRoles.captain) && userStore.teamId == team.id),
                       child: Button(
-                        text: "Voire le profil",
+                        text: "Voir le profil",
                         onPressed: () async {
                           await Navigator.of(context).push<void>(
                             MaterialPageRoute(builder: (context) => UserProfilePage(user: user,))
