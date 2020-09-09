@@ -1,4 +1,6 @@
 import 'package:appli_wei_custom/models/team.dart';
+import 'package:appli_wei_custom/src/pages/team_details_page/team_users_page/team_users_page.dart';
+import 'package:appli_wei_custom/src/shared/widgets/button.dart';
 import 'package:appli_wei_custom/src/shared/widgets/wei_card.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +23,12 @@ class TeamTitle extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(team.name, style: Theme.of(context).textTheme.headline2,),
-                Text("Capitaine : ${team.captainName}", style: Theme.of(context).textTheme.headline3,)
+                Text("Capitaine : ${team.captainName}", style: Theme.of(context).textTheme.headline3,),
+                Button(text: "Voir les membres", onPressed: () async {
+                  await Navigator.of(context).push<void>(
+                    MaterialPageRoute(builder: (context) => TeamUsersPage(team: team,))
+                  );
+                },)
               ],
             ),
           ),
