@@ -16,6 +16,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:video_compress/video_compress.dart';
 
 class ChallengeDetailsPage extends StatefulWidget {
   const ChallengeDetailsPage({Key key, @required this.challenge, this.heroTag, this.showButtons = true}) : super(key: key);
@@ -159,15 +160,32 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       }
     }
 
-    return Button(
-      onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
-        await _sendValidationProof(context);
-      },
-      text: "Valider le défis",
+    return Row(
+      children: [
+        Expanded(
+          child: Button(
+            onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
+              await _sendImageValidationProof(context);
+            },
+            text: "Envoyer une preuve image",
+          ),
+        ),
+        if (!kIsWeb) ...{
+          const SizedBox(width: 4.0,),
+          Expanded(
+            child: Button(
+              onPressed: (widget.challenge.isWaitingValidation || widget.challenge.numberLeft <= 0) ? null : () async {
+                await _sendVideoValidationProof(context);
+              },
+              text: "Envoyer une preuve vidéo",
+            ),
+          )
+        }
+      ],
     );
   }
 
-  Future _sendValidationProof(BuildContext context) async {
+  Future _sendImageValidationProof(BuildContext context) async {
     setState(() {
       _sendingValidation = true;
     });
@@ -226,6 +244,52 @@ class _ChallengeDetailsPageState extends State<ChallengeDetailsPage> {
       });
     }
   }
+
+   Future _sendVideoValidationProof(BuildContext context) async {
+    setState(() {
+      _sendingValidation = true;
+    });
+
+    String base64Video;
+
+    final File video = await FilePicker.getFile(type: FileType.video );
+      
+    if (video == null) {
+      setState(() {
+        _sendingValidation = false;
+      });
+      return;
+    }
+      
+    setState(() {
+      _errorMessage = "Compression de la vidéo... (peut prendre un peu de temps)";
+    });
+
+    final MediaInfo mediaInfo = await VideoCompress.compressVideo(
+      video.path, 
+    );
+
+    final bytes = utf8.encode("type=video") + await mediaInfo.file.readAsBytes();
+    base64Video = base64Encode(bytes); 
+    
+    final UserStore userStore = Provider.of<UserStore>(context, listen: false);
+
+    try {
+      await ChallengeService.instance.submitChallenge(userStore.authentificationHeader, widget.challenge.id, base64Video);
+
+      setState(() {
+        widget.challenge.isWaitingValidation = true;
+        _errorMessage = "";
+        _sendingValidation = false;
+      });
+    } catch (e) {
+      setState(() {
+        _sendingValidation = false;
+        _errorMessage = e.toString();
+      });
+    }
+  }
+
 
   // NOTE : we can only validate team challenges from this point
   Future _validateChallenge() async {

@@ -17,7 +17,7 @@ class Button extends StatelessWidget {
         borderRadius: BorderRadius.circular(32)
       ),
       color: Theme.of(context).accentColor,
-      child: Text(text, style: const TextStyle(color: Colors.white)),
+      child: Text(text, style: const TextStyle(color: Colors.white), textAlign: TextAlign.center,),
     );
   }
 }
