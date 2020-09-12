@@ -12,8 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthenticationService {
   AuthenticationService._privateConstructor();
 
-  // final String serviceBaseUrl = "https://192.168.0.18:45455/api/authentication";
+  // final String serviceBaseUrl = "https://192.168.1.63:45455/api/authentication";
   final String serviceBaseUrl = "https://appli.wei.isati.org/api/authentication";
+  // final String serviceBaseUrl = "https://demo.appli.wei.isati.org/api/authentication";
 
   static final AuthenticationService instance = AuthenticationService._privateConstructor();
 

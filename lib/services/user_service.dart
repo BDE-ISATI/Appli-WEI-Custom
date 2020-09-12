@@ -12,8 +12,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class UserService {
   UserService._privateConstructor();
 
-    // final String serviceBaseUrl = "https://192.168.0.18:45455/api/users";
+    // final String serviceBaseUrl = "https://192.168.1.63:45455/api/users";
     final String serviceBaseUrl = "https://appli.wei.isati.org/api/users";
+    // final String serviceBaseUrl = "https://demo.appli.wei.isati.org/api/users";
 
   static final UserService instance = UserService._privateConstructor();
 

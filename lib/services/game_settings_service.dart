@@ -8,8 +8,9 @@ class GameSettingsService {
   GameSettingsService._privateConstructor();
 
 
-  // final String serviceBaseUrl = "https://192.168.0.18:45455/api/settings";
+  // final String serviceBaseUrl = "https://192.168.1.63:45455/api/settings";
   final String serviceBaseUrl = "https://appli.wei.isati.org/api/settings";
+  // final String serviceBaseUrl = "https://demo.appli.wei.isati.org/api/settings";
 
   static final GameSettingsService instance = GameSettingsService._privateConstructor();
 
